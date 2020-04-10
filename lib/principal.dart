@@ -7,12 +7,9 @@ import 'package:ejemplo_construccion/rounded_picker.dart';
 import 'package:ejemplo_construccion/camera.dart';
 import 'package:ejemplo_construccion/gallery.dart';
 
-
-
 class PrincipalPage extends StatelessWidget {
-  
   final CameraDescription camera;
-  const PrincipalPage({Key key, @required this.camera}): super(key: key);
+  const PrincipalPage({Key key, @required this.camera}) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -26,14 +23,13 @@ class PrincipalPage extends StatelessWidget {
           accentColor: Colors.blueGrey[900]),
       home: MyHomePage(
         title: 'PhotoBoard',
-        camera: this.camera, 
-        ),
+        camera: this.camera,
+      ),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  
   const MyHomePage({Key key, this.title, this.camera}) : super(key: key);
   final String title;
   final CameraDescription camera;
@@ -44,11 +40,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage>
     with SingleTickerProviderStateMixin {
-
-
   DateTime dateTime;
   Duration duration;
-  
 
   TabController _tabController;
   @override
@@ -58,7 +51,6 @@ class _MyHomePageState extends State<MyHomePage>
     super.initState();
     _tabController = TabController(vsync: this, length: 2, initialIndex: 0);
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +62,7 @@ class _MyHomePageState extends State<MyHomePage>
           indicatorColor: Colors.white,
           controller: _tabController,
           tabs: <Widget>[
-            Tab(text: 'Calendario'),
+            Tab(text: 'Horario'),
             Tab(
               text: 'Materias',
             )
@@ -83,53 +75,7 @@ class _MyHomePageState extends State<MyHomePage>
           Column(
             children: <Widget>[
               SizedBox(height: 50),
-              Expanded(
-                  child: ListView(
-                      padding: const EdgeInsets.only(bottom: 50),
-                      children: <Widget>[
-                    Ink(
-                      decoration: const ShapeDecoration(
-                        color: Colors.blueGrey,
-                        shape: CircleBorder(),
-                      ),
-                      child: IconButton(
-                      icon: Icon(Icons.calendar_today),
-                      tooltip: "Ver Calendario",
-                      color: Colors.white,
-                      onPressed: () async {
-                        DateTime newDateTime = await showRoundedDatePicker(
-                            context: context, theme: ThemeData.dark());
-                        if (newDateTime != null) {
-                          setState(() => dateTime = newDateTime);
-                        }
-                      },
-                    ),
-                    ),
-                  ])),
-              SizedBox(height: 50),
-              Expanded(
-                  child: ListView(
-                      padding: const EdgeInsets.only(bottom: 50),
-                      children: <Widget>[
-                    Ink(
-                      decoration: const ShapeDecoration(
-                        color: Colors.blueGrey,
-                        shape: CircleBorder(),
-                      ),
-                      child: IconButton(
-                      icon: Icon(Icons.insert_link),
-                      tooltip: "Subir Archivo",
-                      color: Colors.white,
-                      onPressed: () {
-                         Navigator.of(context).push(
-                         MaterialPageRoute<void>(
-                            builder: (BuildContext context) => Gallery()
-                          )
-                        );
-                      },
-                    ),
-                    ),
-                  ])),
+              Text("Cammilo")
             ],
           ),
           ListView.builder(
@@ -152,21 +98,13 @@ class _MyHomePageState extends State<MyHomePage>
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute<void>(
-                builder: (BuildContext context) =>
-                 TakePictureScreen(
-                  camera: widget.camera
-                )
-              )
-          );
+          Navigator.of(context).push(MaterialPageRoute<void>(
+              builder: (BuildContext context) =>
+                  TakePictureScreen(camera: widget.camera)));
         },
         tooltip: 'Increment',
-        child: Icon(Icons.camera, color: Colors.white),
+        child: Icon(Icons.add, color: Colors.white),
       ),
     );
   }
 }
-
-
-
