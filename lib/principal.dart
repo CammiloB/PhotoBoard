@@ -1,11 +1,11 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:ejemplo_construccion/dummies/chats.dart';
-
-import 'package:ejemplo_construccion/rounded_picker.dart';
-
+import 'widget/information_title_card.dart';
+import 'widget/color/light_color.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:ejemplo_construccion/camera.dart';
-import 'package:ejemplo_construccion/gallery.dart';
+import 'widget/global_card.dart';
 
 class PrincipalPage extends StatelessWidget {
   final CameraDescription camera;
@@ -75,7 +75,49 @@ class _MyHomePageState extends State<MyHomePage>
           Column(
             children: <Widget>[
               SizedBox(height: 50),
-              Text("Cammilo")
+              SingleChildScrollView(
+                  padding: EdgeInsets.only(top: 10),
+                  child: Column(children: <Widget>[
+                    GlobalSituationCard(
+                      cardTitle: 'Recovered CASES',
+                      caseTitle: 'Recovered',
+                      currentData: 10000,
+                      newData: 777777777,
+                      percentChange: 100,
+                      cardColor: CardColors.blue,
+                      icon: Icon(
+                        Icons.arrow_upward,
+                        color: Colors.green,
+                      ),
+                      color: Colors.green,
+                    ),
+                    GlobalSituationCard(
+                      cardTitle: 'Recovered CASES',
+                      caseTitle: 'Recovered',
+                      currentData: 10000,
+                      newData: 777777777,
+                      percentChange: 100,
+                      cardColor: CardColors.blue,
+                      icon: Icon(
+                        Icons.arrow_upward,
+                        color: Colors.green,
+                      ),
+                      color: Colors.green,
+                    ),
+                    GlobalSituationCard(
+                      cardTitle: 'Recovered CASES',
+                      caseTitle: 'Recovered',
+                      currentData: 10000,
+                      newData: 777777777,
+                      percentChange: 100,
+                      cardColor: CardColors.blue,
+                      icon: Icon(
+                        Icons.arrow_upward,
+                        color: Colors.green,
+                      ),
+                      color: Colors.green,
+                    ),
+                  ]))
             ],
           ),
           ListView.builder(
