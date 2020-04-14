@@ -37,7 +37,7 @@ class _registerPageState extends State<RegisterPage> {
               children: <Widget>[
                 Row(children: <Widget>[
                   VerticalText(title:"Registrarse"),
-                  TextLogin(),
+                  TextLogin(text: "Aqui puedes registrarte para disfrutar de los beneficios de PhotoBoard"),
                 ]),
                 Input(text: "Nombres"),
                 Input(text: "Apellidos"),

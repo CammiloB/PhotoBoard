@@ -36,7 +36,7 @@ class _LoginPageState extends State<LoginPage> {
               children: <Widget>[
                 Row(children: <Widget>[
                   VerticalText(title: "Iniciar Sesión"),
-                  TextLogin(),
+                  TextLogin(text: "Bienvenido al Login de PhotoBoard"),
                 ]),
                 InputEmail(),
                 PasswordInput(),
