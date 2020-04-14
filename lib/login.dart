@@ -2,11 +2,11 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:ejemplo_construccion/widget/button.dart';
 import 'package:ejemplo_construccion/widget/first.dart';
-import 'package:ejemplo_construccion/widget/forgot.dart';
 import 'package:ejemplo_construccion/widget/inputEmail.dart';
 import 'package:ejemplo_construccion/widget/password.dart';
 import 'package:ejemplo_construccion/widget/textLogin.dart';
 import 'package:ejemplo_construccion/widget/verticalText.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 class LoginPage extends StatefulWidget {

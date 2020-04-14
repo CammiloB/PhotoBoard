@@ -1,9 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:ejemplo_construccion/dummies/chats.dart';
-import 'widget/information_title_card.dart';
 import 'widget/color/light_color.dart';
-import 'package:line_icons/line_icons.dart';
 import 'package:ejemplo_construccion/camera.dart';
 import 'widget/global_card.dart';
 
@@ -14,18 +12,41 @@ class PrincipalPage extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-          primarySwatch: Colors.blueGrey,
-          primaryColor: Colors.blueGrey[900],
-          primaryColorDark: Colors.blueGrey[900],
-          accentColor: Colors.blueGrey[900]),
-      home: MyHomePage(
-        title: 'PhotoBoard',
-        camera: this.camera,
-      ),
-    );
+    Future<bool> _onBackPressed() {
+      return showDialog(
+            context: context,
+            builder: (context) => new AlertDialog(
+              title: new Text('Are you sure?'),
+              content: new Text('Do you want to exit an App'),
+              actions: <Widget>[
+                new GestureDetector(
+                  onTap: () => Navigator.of(context).pop(false),
+                  child: Text("NO"),
+                ),
+                SizedBox(height: 16),
+                new GestureDetector(
+                  onTap: () => Navigator.of(context).pop(true),
+                  child: Text("YES"),
+                ),
+              ],
+            ),
+          ) ??
+          false;
+    }
+
+    return WillPopScope(
+        onWillPop: _onBackPressed,
+        child: MaterialApp(
+          theme: ThemeData(
+              primarySwatch: Colors.blueGrey,
+              primaryColor: Colors.blueGrey[900],
+              primaryColorDark: Colors.blueGrey[900],
+              accentColor: Colors.blueGrey[900]),
+          home: MyHomePage(
+            title: 'PhotoBoard',
+            camera: this.camera,
+          ),
+        ));
   }
 }
 

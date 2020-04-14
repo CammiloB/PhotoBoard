@@ -25,6 +25,8 @@ dependencies:
   table_calendar: ^2.2.3
   google_fonts: 0.2.0
   flutter_spinkit: 4.1.2
+
+  cloud_firestore: ^0.13.0+1
   
 
 

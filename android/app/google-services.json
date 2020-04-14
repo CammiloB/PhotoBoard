@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "839991737171",
+    "firebase_url": "https://photoboard-94be9.firebaseio.com",
+    "project_id": "photoboard-94be9",
+    "storage_bucket": "photoboard-94be9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:839991737171:android:c1d2015d00e3e650b63fa6",
+        "android_client_info": {
+          "package_name": "com.innova.photoboard"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "839991737171-l16avjpkhvp4mn27q89fifvap661u9ij.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvcI32cvxyzWIr4DSJ11i3kJNrh3Fc6Mw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "839991737171-l16avjpkhvp4mn27q89fifvap661u9ij.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
