@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ejemplo_construccion/delayed_animation.dart';
 import 'package:ejemplo_construccion/login.dart';
+import 'package:ejemplo_construccion/register.dart';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
@@ -216,7 +217,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
           onPressed: () {
             Navigator.of(context).push(
               MaterialPageRoute<void>(
-                builder: (BuildContext context) => LoginPage(
+                builder: (BuildContext context) => RegisterPage(
                   camera: widget.camera,
                 )
               )

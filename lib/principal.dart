@@ -35,18 +35,18 @@ class PrincipalPage extends StatelessWidget {
     }
 
     return WillPopScope(
-        onWillPop: _onBackPressed,
-        child: MaterialApp(
-          theme: ThemeData(
-              primarySwatch: Colors.blueGrey,
-              primaryColor: Colors.blueGrey[900],
-              primaryColorDark: Colors.blueGrey[900],
-              accentColor: Colors.blueGrey[900]),
-          home: MyHomePage(
-            title: 'PhotoBoard',
-            camera: this.camera,
-          ),
-        ));
+      onWillPop: _onBackPressed,
+      child: MaterialApp(
+      theme: ThemeData(
+          primarySwatch: Colors.blueGrey,
+          primaryColor: Colors.blueGrey[900],
+          primaryColorDark: Colors.blueGrey[900],
+          accentColor: Colors.blueGrey[900]),
+      home: MyHomePage(
+        title: 'PhotoBoard',
+        camera: this.camera,
+      ),
+    ));
   }
 }
 
@@ -93,7 +93,7 @@ class _MyHomePageState extends State<MyHomePage>
       body: TabBarView(
         controller: _tabController,
         children: <Widget>[
-          Column(
+          ListView(
             children: <Widget>[
               SizedBox(height: 50),
               SingleChildScrollView(
