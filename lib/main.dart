@@ -71,7 +71,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
               gradient: LinearGradient(
               begin: Alignment.topRight,
               end: Alignment.bottomLeft,
-              colors: [Colors.black87, Colors.blueGrey]),
+              colors: [Colors.black87, Colors.blueGrey[100]]),
             ),
             child: ListView(
               children: <Widget>[
@@ -89,11 +89,9 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
                       elevation: 8.0,
                       shape: CircleBorder(),
                       child: CircleAvatar(
-                        backgroundColor: Colors.grey[100],
-                        child: FlutterLogo(
-                          size: 50.0,
-                        ),
-                        radius: 50.0,
+                        backgroundColor: Colors.blueGrey[700],
+                        child: new Image.asset('assets/foto1.png', width: 120.0, height: 145.0,),
+                        radius: 65.0,
                       )),
                 ),
                 DelayedAnimation(
@@ -161,7 +159,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Colors.blue[300],
+              color: Colors.amber[300],
               blurRadius: 10.0, // has the effect of softening the shadow
               spreadRadius: 1.0, // has the effect of extending the shadow
               offset: Offset(
@@ -187,7 +185,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
           child: const Text(
             'Ingresar',
             style: TextStyle(
-                  color: Colors.lightBlueAccent,
+                  color: Colors.blueGrey,
                   fontSize: 14,
                   fontWeight: FontWeight.w700,
                 ),
@@ -201,7 +199,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
          decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Colors.blue[300],
+              color: Colors.amber[300],
               blurRadius: 10.0, // has the effect of softening the shadow
               spreadRadius: 1.0, // has the effect of extending the shadow
               offset: Offset(
@@ -227,7 +225,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
           child: const Text(
             'Registrarse',
             style: TextStyle(
-                  color: Colors.lightBlueAccent,
+                  color: Colors.blueGrey,
                   fontSize: 14,
                   fontWeight: FontWeight.w700,
                 ),

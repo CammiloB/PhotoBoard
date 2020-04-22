@@ -25,7 +25,7 @@ class _ButtonLoginState extends State<ButtonLogin> {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Colors.blue[300],
+              color: Colors.amber[300],
               blurRadius: 10.0, // has the effect of softening the shadow
               spreadRadius: 1.0, // has the effect of extending the shadow
               offset: Offset(

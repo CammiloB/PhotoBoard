@@ -29,7 +29,7 @@ class _registerPageState extends State<RegisterPage> {
           gradient: LinearGradient(
               begin: Alignment.topRight,
               end: Alignment.bottomLeft,
-              colors: [Colors.black87, Colors.blueGrey]),
+              colors: [Colors.black87, Colors.blueGrey[100]]),
         ),
         child: ListView(
           children: <Widget>[
