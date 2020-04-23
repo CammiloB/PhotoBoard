@@ -71,7 +71,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
               gradient: LinearGradient(
               begin: Alignment.topRight,
               end: Alignment.bottomLeft,
-              colors: [Colors.black87, Colors.blueGrey[100]]),
+              colors: [Colors.black87, Colors.blueGrey[200]]),
             ),
             child: ListView(
               children: <Widget>[
@@ -159,7 +159,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Colors.amber[300],
+              color: Colors.red[300],
               blurRadius: 10.0, // has the effect of softening the shadow
               spreadRadius: 1.0, // has the effect of extending the shadow
               offset: Offset(
@@ -199,7 +199,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
          decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Colors.amber[300],
+              color: Colors.red[300],
               blurRadius: 10.0, // has the effect of softening the shadow
               spreadRadius: 1.0, // has the effect of extending the shadow
               offset: Offset(
