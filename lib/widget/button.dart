@@ -2,18 +2,27 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:ejemplo_construccion/principal.dart';
 
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import 'package:ejemplo_construccion/authentication.dart';
+
 
 
 class ButtonLogin extends StatefulWidget {
 
   final CameraDescription camera;
-  const ButtonLogin({Key key, @required this.camera}): super(key: key);
+  final String email;
+  final String password;
+  const ButtonLogin({Key key, @required this.camera, this.email, this.password}): super(key: key);
 
   @override
   _ButtonLoginState createState() => _ButtonLoginState();
 }
 
 class _ButtonLoginState extends State<ButtonLogin> {
+  AuthService authService = new AuthService();
+  bool auth = false;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -39,13 +48,21 @@ class _ButtonLoginState extends State<ButtonLogin> {
         ),
         child: FlatButton(
           onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute<void>(
-                builder: (BuildContext context) => PrincipalPage(
-                  camera: widget.camera,
+            
+            if(authService.signInFirebase("prueba123@photoboard.com", "prueba123") != null){
+              Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (BuildContext context) => PrincipalPage(
+                    camera: widget.camera,
+                  )
                 )
-              )
-            );
+              );
+            }else{
+              print("Error");
+            }
+
+            
+            
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,

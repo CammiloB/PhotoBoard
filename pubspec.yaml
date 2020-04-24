@@ -19,6 +19,7 @@ dependencies:
   path:
   path_provider:
   flutter_bloc: ^3.2.0
+  
 
   cupertino_icons: ^0.1.2
   avatar_glow:
@@ -27,6 +28,10 @@ dependencies:
   flutter_spinkit: 4.1.2
 
   cloud_firestore: ^0.13.0+1
+
+  firebase_auth:
+  google_sign_in:
+
   
 
 

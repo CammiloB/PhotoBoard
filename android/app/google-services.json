@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "839991737171",
-    "firebase_url": "https://photoboard-94be9.firebaseio.com",
-    "project_id": "photoboard-94be9",
-    "storage_bucket": "photoboard-94be9.appspot.com"
+    "project_number": "675066293250",
+    "firebase_url": "https://photoboard-4901c.firebaseio.com",
+    "project_id": "photoboard-4901c",
+    "storage_bucket": "photoboard-4901c.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:839991737171:android:c1d2015d00e3e650b63fa6",
+        "mobilesdk_app_id": "1:675066293250:android:608029956873acd8674b1b",
         "android_client_info": {
-          "package_name": "com.innova.photoboard"
+          "package_name": "com.example.photoboard"
         }
       },
       "oauth_client": [
         {
-          "client_id": "839991737171-l16avjpkhvp4mn27q89fifvap661u9ij.apps.googleusercontent.com",
+          "client_id": "675066293250-5ndb07c2e2m9sdflfcfo2k63gimmhido.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDvcI32cvxyzWIr4DSJ11i3kJNrh3Fc6Mw"
+          "current_key": "AIzaSyBdQdX1P02BfaABnL9zOMdaFy5gAPUY8f4"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "839991737171-l16avjpkhvp4mn27q89fifvap661u9ij.apps.googleusercontent.com",
+              "client_id": "675066293250-5ndb07c2e2m9sdflfcfo2k63gimmhido.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
