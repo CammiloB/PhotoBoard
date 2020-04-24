@@ -1,24 +1,42 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:ejemplo_construccion/dummies/chats.dart';
-
-import 'package:ejemplo_construccion/rounded_picker.dart';
-
+import 'widget/color/light_color.dart';
 import 'package:ejemplo_construccion/camera.dart';
-import 'package:ejemplo_construccion/gallery.dart';
-
-
+import 'widget/global_card.dart';
 
 class PrincipalPage extends StatelessWidget {
-  
   final CameraDescription camera;
-  const PrincipalPage({Key key, @required this.camera}): super(key: key);
+  const PrincipalPage({Key key, @required this.camera}) : super(key: key);
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
+    Future<bool> _onBackPressed() {
+      return showDialog(
+            context: context,
+            builder: (context) => new AlertDialog(
+              title: new Text('Are you sure?'),
+              content: new Text('Do you want to exit an App'),
+              actions: <Widget>[
+                new GestureDetector(
+                  onTap: () => Navigator.of(context).pop(false),
+                  child: Text("NO"),
+                ),
+                SizedBox(height: 16),
+                new GestureDetector(
+                  onTap: () => Navigator.of(context).pop(true),
+                  child: Text("YES"),
+                ),
+              ],
+            ),
+          ) ??
+          false;
+    }
+
+    return WillPopScope(
+      onWillPop: _onBackPressed,
+      child: MaterialApp(
       theme: ThemeData(
           primarySwatch: Colors.blueGrey,
           primaryColor: Colors.blueGrey[900],
@@ -26,14 +44,13 @@ class PrincipalPage extends StatelessWidget {
           accentColor: Colors.blueGrey[900]),
       home: MyHomePage(
         title: 'PhotoBoard',
-        camera: this.camera, 
-        ),
-    );
+        camera: this.camera,
+      ),
+    ));
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  
   const MyHomePage({Key key, this.title, this.camera}) : super(key: key);
   final String title;
   final CameraDescription camera;
@@ -44,11 +61,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage>
     with SingleTickerProviderStateMixin {
-
-
   DateTime dateTime;
   Duration duration;
-  
 
   TabController _tabController;
   @override
@@ -58,7 +72,6 @@ class _MyHomePageState extends State<MyHomePage>
     super.initState();
     _tabController = TabController(vsync: this, length: 2, initialIndex: 0);
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +83,7 @@ class _MyHomePageState extends State<MyHomePage>
           indicatorColor: Colors.white,
           controller: _tabController,
           tabs: <Widget>[
-            Tab(text: 'Calendario'),
+            Tab(text: 'Horario'),
             Tab(
               text: 'Materias',
             )
@@ -80,56 +93,91 @@ class _MyHomePageState extends State<MyHomePage>
       body: TabBarView(
         controller: _tabController,
         children: <Widget>[
-          Column(
+          ListView(
             children: <Widget>[
               SizedBox(height: 50),
-              Expanded(
-                  child: ListView(
-                      padding: const EdgeInsets.only(bottom: 50),
-                      children: <Widget>[
-                    Ink(
-                      decoration: const ShapeDecoration(
-                        color: Colors.blueGrey,
-                        shape: CircleBorder(),
+              SingleChildScrollView(
+                  padding: EdgeInsets.only(top: 10),
+                  child: Column(children: <Widget>[
+                    GlobalSituationCard(
+                      cardTitle: 'Recovered CASES',
+                      caseTitle: 'Recovered',
+                      currentData: 10000,
+                      newData: 777777777,
+                      percentChange: 100,
+                      cardColor: CardColors.blue,
+                      icon: Icon(
+                        Icons.arrow_upward,
+                        color: Colors.green,
                       ),
-                      child: IconButton(
-                      icon: Icon(Icons.calendar_today),
-                      tooltip: "Ver Calendario",
-                      color: Colors.white,
-                      onPressed: () async {
-                        DateTime newDateTime = await showRoundedDatePicker(
-                            context: context, theme: ThemeData.dark());
-                        if (newDateTime != null) {
-                          setState(() => dateTime = newDateTime);
-                        }
-                      },
+                      color: Colors.green,
                     ),
-                    ),
-                  ])),
-              SizedBox(height: 50),
-              Expanded(
-                  child: ListView(
-                      padding: const EdgeInsets.only(bottom: 50),
-                      children: <Widget>[
-                    Ink(
-                      decoration: const ShapeDecoration(
-                        color: Colors.blueGrey,
-                        shape: CircleBorder(),
+                    GlobalSituationCard(
+                      cardTitle: 'Recovered CASES',
+                      caseTitle: 'Recovered',
+                      currentData: 10000,
+                      newData: 777777777,
+                      percentChange: 100,
+                      cardColor: CardColors.blue,
+                      icon: Icon(
+                        Icons.arrow_upward,
+                        color: Colors.green,
                       ),
-                      child: IconButton(
-                      icon: Icon(Icons.insert_drive_file),
-                      tooltip: "Subir Archivo",
-                      color: Colors.white,
-                      onPressed: () {
-                         Navigator.of(context).push(
-                         MaterialPageRoute<void>(
-                            builder: (BuildContext context) => Gallery()
-                          )
-                        );
-                      },
+                      color: Colors.green,
                     ),
+                    GlobalSituationCard(
+                      cardTitle: 'Recovered CASES',
+                      caseTitle: 'Recovered',
+                      currentData: 10000,
+                      newData: 777777777,
+                      percentChange: 100,
+                      cardColor: CardColors.blue,
+                      icon: Icon(
+                        Icons.arrow_upward,
+                        color: Colors.green,
+                      ),
+                      color: Colors.green,
                     ),
-                  ])),
+                    GlobalSituationCard(
+                      cardTitle: 'Recovered CASES',
+                      caseTitle: 'Recovered',
+                      currentData: 10000,
+                      newData: 777777777,
+                      percentChange: 100,
+                      cardColor: CardColors.blue,
+                      icon: Icon(
+                        Icons.arrow_upward,
+                        color: Colors.green,
+                      ),
+                      color: Colors.green,
+                    ),
+                    GlobalSituationCard(
+                      cardTitle: 'Recovered CASES',
+                      caseTitle: 'Recovered',
+                      currentData: 10000,
+                      newData: 777777777,
+                      percentChange: 100,
+                      cardColor: CardColors.blue,
+                      icon: Icon(
+                        Icons.arrow_upward,
+                        color: Colors.green,
+                      ),
+                      color: Colors.green,
+                    ),
+                    GlobalSituationCard(
+                      cardTitle: 'Recovered CASES',
+                      caseTitle: 'Recovered',
+                      currentData: 10000,
+                      newData: 777777777,
+                      percentChange: 100,
+                      cardColor: CardColors.blue,
+                      icon: Icon(
+                        Icons.arrow_upward,
+                        color: Colors.green,
+                      ),
+                      color: Colors.green,
+                    ),
+                  ]))
             ],
           ),
           ListView.builder(
@@ -152,21 +200,13 @@ class _MyHomePageState extends State<MyHomePage>
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute<void>(
-                builder: (BuildContext context) =>
-                 TakePictureScreen(
-                  camera: widget.camera
-                )
-              )
-          );
+          Navigator.of(context).push(MaterialPageRoute<void>(
+              builder: (BuildContext context) =>
+                  TakePictureScreen(camera: widget.camera)));
         },
         tooltip: 'Increment',
-        child: Icon(Icons.camera, color: Colors.white),
+        child: Icon(Icons.add, color: Colors.white),
       ),
     );
   }
 }
-
-
-

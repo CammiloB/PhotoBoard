@@ -6,20 +6,21 @@ import 'package:ejemplo_construccion/widget/inputEmail.dart';
 import 'package:ejemplo_construccion/widget/password.dart';
 import 'package:ejemplo_construccion/widget/textLogin.dart';
 import 'package:ejemplo_construccion/widget/verticalText.dart';
-import 'package:path/path.dart';
+import 'package:ejemplo_construccion/widget/input.dart';
 
 
-class LoginPage extends StatefulWidget {
+class RegisterPage extends StatefulWidget {
 
   final CameraDescription camera;
 
-  const LoginPage({Key key, @required this.camera}): super(key: key);
+  const RegisterPage({Key key, @required this.camera}): super(key: key);
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _registerPageState createState() => _registerPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _registerPageState extends State<RegisterPage> {
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,15 +36,16 @@ class _LoginPageState extends State<LoginPage> {
             Column(
               children: <Widget>[
                 Row(children: <Widget>[
-                  VerticalText(title: "Iniciar Sesión"),
-                  TextLogin(text: "Bienvenido al Login de PhotoBoard"),
+                  VerticalText(title:"Registrarse"),
+                  TextLogin(text: "Aqui puedes registrarte para disfrutar de los beneficios de PhotoBoard"),
                 ]),
-                InputEmail(),
+                Input(text: "Nombres"),
+                Input(text: "Apellidos"),
+                Input(text: "Email"),
                 PasswordInput(),
                 ButtonLogin(
                   camera: widget.camera,
                 ),
-                FirstTime(),
               ],
             ),
           ],

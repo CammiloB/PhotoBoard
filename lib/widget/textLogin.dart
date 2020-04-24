@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
 class TextLogin extends StatefulWidget {
+
+  final String text;
+  const TextLogin({Key key, @required this.text}): super(key: key);
+
   @override
   _TextLoginState createState() => _TextLoginState();
 }
@@ -21,7 +25,7 @@ class _TextLoginState extends State<TextLogin> {
             ),
             Center(
               child: Text(
-                'A world of possibility in an app',
+                widget.text,
                 style: TextStyle(
                   fontSize: 24,
                   color: Colors.white,
