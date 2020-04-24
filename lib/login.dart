@@ -6,6 +6,7 @@ import 'package:ejemplo_construccion/widget/inputEmail.dart';
 import 'package:ejemplo_construccion/widget/password.dart';
 import 'package:ejemplo_construccion/widget/textLogin.dart';
 import 'package:ejemplo_construccion/widget/verticalText.dart';
+import 'package:path/path.dart';
 
 
 class LoginPage extends StatefulWidget {
@@ -27,7 +28,7 @@ class _LoginPageState extends State<LoginPage> {
           gradient: LinearGradient(
               begin: Alignment.topRight,
               end: Alignment.bottomLeft,
-              colors: [Colors.black87, Colors.blueGrey]),
+              colors: [Colors.black87, Colors.blueGrey[100]]),
         ),
         child: ListView(
           children: <Widget>[
