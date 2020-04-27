@@ -9,35 +9,22 @@ import 'custom_route.dart';
 
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'dart:io';
+
 
 void main() => runApp(new MyApp());
 
 class MyApp extends StatelessWidget {
-  Duration get loginTime => Duration(milliseconds: timeDilation.ceil() * 2250);
-
-  /*Future<String> _loginUser(LoginData data) {
-    return Future.delayed(loginTime).then((_) {
-      if (!mockUsers.containsKey(data.name)) {
-        return 'Username not exists';
-      }
-      if (mockUsers[data.name] != data.password) {
-        return 'Password does not match';
-      }
-      /* Navigator.of(context).push(
-        MaterialPageRoute<void> (
-          builder: (BuildContext context) => HomePage()
-        
-        )
-      ); */
-      return null;
-    });
-  }*/
+  Duration get loginTime => Duration(milliseconds: timeDilation.ceil() * 0);
+  AuthResult user;
 
   Future<String> _loginUser(LoginData data){
     return Future.delayed(loginTime).then((_) async {
       try{
         AuthResult result = await FirebaseAuth.instance.signInWithEmailAndPassword(email: data.name, password: data.password);
-        print('CCCCCCCCCCCC   '+result.user.toString());
+        this.user = result;
         return null;
       }catch (e){
         return "Error";
@@ -49,6 +36,10 @@ class MyApp extends StatelessWidget {
     return Future.delayed(loginTime).then((_) async {
       try{
         AuthResult result = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: data.name, password: data.password);
+        this.user = result;
+        Firestore.instance.collection('users').add({
+          'name': 'camilo'
+        }); 
         return null;
       }catch (e){
         return "Error";
@@ -77,14 +68,9 @@ class MyApp extends StatelessWidget {
           return _loginUser(loginData);
         },
         onRecoverPassword: null,
-        onSubmitAnimationCompleted: () {
-        Navigator.of(context).pushReplacement(FadePageRoute(
-          builder: (context) => HomePage(),
-        ));
-      },
+        user: this.user
       ),
       navigatorObservers: [TransitionRouteObserver()],
-      routes: {HomePage.routeName: (context) => HomePage()},
     );
   }
 }

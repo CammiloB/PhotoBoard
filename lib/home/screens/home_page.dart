@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ejemplo_construccion/home/screens/calendar_page.dart';
 import 'package:ejemplo_construccion/home/theme/colors/light_colors.dart';
@@ -6,8 +7,20 @@ import 'package:ejemplo_construccion/home/widgets/task_column.dart';
 import 'package:ejemplo_construccion/home/widgets/active_project_card.dart';
 import 'package:ejemplo_construccion/home/widgets/top_container.dart';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class HomePage extends StatelessWidget {
   static const routeName = '/home';
+  final AuthResult userInfo;
+
+  String name;
+
+  HomePage({
+    Key key,
+    @required this.userInfo,
+  }):super(key: key);
+
+
   Text subheading(String title) {
     return Text(
       title,
@@ -72,9 +85,9 @@ class HomePage extends StatelessWidget {
                             center: CircleAvatar(
                               backgroundColor: LightColors.kBlue,
                               radius: 35.0,
-                              backgroundImage: AssetImage(
+                              /*backgroundImage: AssetImage(
                                 'assets/images/avatar.png',
-                              ),
+                              ),*/
                             ),
                           ),
                           Column(
@@ -82,7 +95,7 @@ class HomePage extends StatelessWidget {
                             children: <Widget>[
                               Container(
                                 child: Text(
-                                  'Sourav Suman',
+                                  'Camilo',
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
                                     fontSize: 22.0,
@@ -123,7 +136,7 @@ class HomePage extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              subheading('My Tasks'),
+                              subheading('Mis tareas'),
                               GestureDetector(
                                 onTap: () {
                                   Navigator.push(
@@ -169,21 +182,19 @@ class HomePage extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          subheading('Active Projects'),
+                          subheading('Mis Materias'),
                           SizedBox(height: 5.0),
                           Row(
                             children: <Widget>[
                               ActiveProjectsCard(
                                 cardColor: LightColors.kGreen,
-                                loadingPercent: 0.25,
-                                title: 'Medical App',
+                                title: 'Calculo',
                                 subtitle: '9 hours progress',
                               ),
                               SizedBox(width: 20.0),
                               ActiveProjectsCard(
                                 cardColor: LightColors.kRed,
-                                loadingPercent: 0.6,
-                                title: 'Making History Notes',
+                                title: 'Programación',
                                 subtitle: '20 hours progress',
                               ),
                             ],
@@ -192,14 +203,12 @@ class HomePage extends StatelessWidget {
                             children: <Widget>[
                               ActiveProjectsCard(
                                 cardColor: LightColors.kDarkYellow,
-                                loadingPercent: 0.45,
                                 title: 'Sports App',
                                 subtitle: '5 hours progress',
                               ),
                               SizedBox(width: 20.0),
                               ActiveProjectsCard(
                                 cardColor: LightColors.kBlue,
-                                loadingPercent: 0.9,
                                 title: 'Online Flutter Course',
                                 subtitle: '23 hours progress',
                               ),
@@ -218,3 +227,4 @@ class HomePage extends StatelessWidget {
     );
   }
 }
+
