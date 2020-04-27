@@ -37,6 +37,18 @@ class MyApp extends StatelessWidget {
     return Future.delayed(loginTime).then((_) async {
       try{
         AuthResult result = await FirebaseAuth.instance.signInWithEmailAndPassword(email: data.name, password: data.password);
+        print('CCCCCCCCCCCC   '+result.user.toString());
+        return null;
+      }catch (e){
+        return "Error";
+      }
+    });
+  }
+
+  Future<String> _registerUser(LoginData data){
+    return Future.delayed(loginTime).then((_) async {
+      try{
+        AuthResult result = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: data.name, password: data.password);
         return null;
       }catch (e){
         return "Error";
@@ -52,7 +64,12 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: FlutterLogin(
-        onSignup: null,
+        onSignup: (loginData) {
+          print('Register Info');
+          print('Name: ${loginData.name}');
+          print('Password: ${loginData.password}');
+          return _registerUser(loginData);
+        },
         onLogin: (loginData) {
           print('Login info');
           print('Name: ${loginData.name}');
