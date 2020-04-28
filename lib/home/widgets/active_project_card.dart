@@ -1,18 +1,28 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:percent_indicator/percent_indicator.dart';
+import 'package:ejemplo_construccion/matter/matter.dart';
 
 class ActiveProjectsCard extends StatelessWidget {
   final Color cardColor;
   final String title;
   final String subtitle;
+  final BuildContext context;
 
   ActiveProjectsCard({
     this.cardColor,
     this.title,
     this.subtitle,
+    this.context
   });
+
+  void _onTapDown(TapDownDetails details) {
+     Navigator.of(context).push(
+        MaterialPageRoute<void> (
+          builder: (BuildContext context) => PrincipalPage()
+        )
+      );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +41,7 @@ class ActiveProjectsCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             GestureDetector(
+              onTapDown: _onTapDown,
               child: Transform.scale(
                 scale: 0.5,
                 child: Container(

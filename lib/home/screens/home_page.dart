@@ -20,6 +20,15 @@ class HomePage extends StatelessWidget {
     @required this.userInfo,
   }):super(key: key);
 
+  getName(){
+    String name;
+    DocumentReference doc = Firestore.instance.collection('users').document('vGtL0vtWs5iyuXe6hp8E');
+    doc.get().then((value) => {
+      name = value['name']
+    });
+    return name;
+  }
+
 
   Text subheading(String title) {
     return Text(
@@ -95,7 +104,7 @@ class HomePage extends StatelessWidget {
                             children: <Widget>[
                               Container(
                                 child: Text(
-                                  'Camilo',
+                                  'camilo',
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
                                     fontSize: 22.0,
@@ -153,7 +162,7 @@ class HomePage extends StatelessWidget {
                           TaskColumn(
                             icon: Icons.alarm,
                             iconBackgroundColor: LightColors.kRed,
-                            title: 'To Do',
+                            title: 'Por Hacer',
                             subtitle: '5 tasks now. 1 started',
                           ),
                           SizedBox(
@@ -162,14 +171,14 @@ class HomePage extends StatelessWidget {
                           TaskColumn(
                             icon: Icons.blur_circular,
                             iconBackgroundColor: LightColors.kDarkYellow,
-                            title: 'In Progress',
+                            title: 'En Progreso',
                             subtitle: '1 tasks now. 1 started',
                           ),
                           SizedBox(height: 15.0),
                           TaskColumn(
                             icon: Icons.check_circle_outline,
                             iconBackgroundColor: LightColors.kBlue,
-                            title: 'Done',
+                            title: 'Hecho',
                             subtitle: '18 tasks now. 13 started',
                           ),
                         ],
@@ -190,12 +199,14 @@ class HomePage extends StatelessWidget {
                                 cardColor: LightColors.kGreen,
                                 title: 'Calculo',
                                 subtitle: '9 hours progress',
+                                context: context,
                               ),
                               SizedBox(width: 20.0),
                               ActiveProjectsCard(
                                 cardColor: LightColors.kRed,
                                 title: 'Programación',
                                 subtitle: '20 hours progress',
+                                context: context,
                               ),
                             ],
                           ),
@@ -205,12 +216,14 @@ class HomePage extends StatelessWidget {
                                 cardColor: LightColors.kDarkYellow,
                                 title: 'Sports App',
                                 subtitle: '5 hours progress',
+                                context: context,
                               ),
                               SizedBox(width: 20.0),
                               ActiveProjectsCard(
                                 cardColor: LightColors.kBlue,
                                 title: 'Online Flutter Course',
                                 subtitle: '23 hours progress',
+                                context: context,
                               ),
                             ],
                           ),
