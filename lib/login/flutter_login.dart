@@ -156,7 +156,15 @@ class __HeaderState extends State<_Header> {
     if (widget.logoTag != null) {
       logo = Hero(
         tag: widget.logoTag,
-        child: logo,
+        child: Material(
+            elevation: 8.0,
+            shape: CircleBorder(),
+            child: CircleAvatar(
+              backgroundColor: Colors.blueGrey[700],
+              child: new Image.asset('assets/foto1.png', width: 120.0, height: 145.0,),
+              radius: 65.0,
+            )
+        ),
       );
     }
 
