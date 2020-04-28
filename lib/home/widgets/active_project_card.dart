@@ -60,8 +60,8 @@ class ActiveProjectsCard extends StatelessWidget {
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                         colors: [
-                          Color(0xFF0000FF),
-                          Color(0xFFFF3500),
+                          Color(0xFFDBDBDB),
+                          Color(0xFF263238),
                         ],
                       )),
                       child: Center(

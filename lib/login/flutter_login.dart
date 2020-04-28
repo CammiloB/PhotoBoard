@@ -200,10 +200,10 @@ class __HeaderState extends State<_Header> {
             offset: .5,
             fadeDirection: FadeDirection.topToBottom,
             child:  Material(
-              elevation: 8.0,
+              elevation: 8.2,
               shape: CircleBorder(),
               child: CircleAvatar(
-                backgroundColor: Colors.blueGrey[700],
+                backgroundColor: Color(0xFF616161),
                 child: new Image.asset('assets/foto1.png', width: 120.0, height: 145.0,),
                 radius: 65.0,
               )
@@ -414,7 +414,7 @@ class _FlutterLoginState extends State<FlutterLogin>
           ),
           RaisedButton(
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            color: Colors.blue,
+            color: Colors.blueGrey[300],
             child: Text('LOADING', style: textStyle),
             onPressed: () => authCardKey.currentState.runLoadingAnimation(),
           ),
