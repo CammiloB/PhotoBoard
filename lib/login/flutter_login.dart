@@ -141,9 +141,11 @@ class __HeaderState extends State<_Header> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    const gap = 5.0;
+    const gap = 20.0;
     final logoHeight = min(widget.height - _titleHeight - gap, kMaxLogoHeight);
     final displayLogo = widget.logoPath != null && logoHeight >= kMinLogoHeight;
+
+    
 
     Widget logo = displayLogo
         ? Image.asset(
@@ -153,20 +155,11 @@ class __HeaderState extends State<_Header> {
           )
         : NullWidget();
 
-    if (widget.logoTag != null) {
+    /*if (widget.logoTag != null) {
       logo = Hero(
         tag: widget.logoTag,
-        child: Material(
-            elevation: 8.0,
-            shape: CircleBorder(),
-            child: CircleAvatar(
-              backgroundColor: Colors.blueGrey[700],
-              child: new Image.asset('assets/foto1.png', width: 120.0, height: 145.0,),
-              radius: 65.0,
-            )
-        ),
       );
-    }
+    }*/
 
     Widget title;
     if (widget.titleTag != null && !DartHelper.isNullOrEmpty(widget.title)) {
@@ -206,7 +199,15 @@ class __HeaderState extends State<_Header> {
             controller: widget.titleController,
             offset: .5,
             fadeDirection: FadeDirection.topToBottom,
-            child: title,
+            child:  Material(
+              elevation: 8.0,
+              shape: CircleBorder(),
+              child: CircleAvatar(
+                backgroundColor: Colors.blueGrey[700],
+                child: new Image.asset('assets/foto1.png', width: 120.0, height: 145.0,),
+                radius: 65.0,
+              )
+            ),
           ),
         ],
       ),
