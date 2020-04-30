@@ -21,12 +21,14 @@ class HomePage extends StatelessWidget {
   }):super(key: key);
 
   getName(){
-    String name;
-    DocumentReference doc = Firestore.instance.collection('users').document('vGtL0vtWs5iyuXe6hp8E');
-    doc.get().then((value) => {
-      name = value['name']
+    String nam = "camilo";
+    Firestore.instance.collection('users').document('vGtL0vtWs5iyuXe6hp8E').snapshots().first.then((value) => {
+      //name = value.data['name']
+      print("Estoy entrando"),
+      print(value.data['name']),
+      nam = "Sebastian"
     });
-    return name;
+    return nam;
   }
 
 
@@ -40,6 +42,8 @@ class HomePage extends StatelessWidget {
           letterSpacing: 1.2),
     );
   }
+
+  
 
   static CircleAvatar calendarIcon() {
     return CircleAvatar(
@@ -56,7 +60,30 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    return Scaffold(
+     Future<bool> _onBackPressed() {
+      return showDialog(
+            context: context,
+            builder: (context) => new AlertDialog(
+              title: new Text('Are you sure?'),
+              content: new Text('Do you want to exit an App'),
+              actions: <Widget>[
+                new GestureDetector(
+                  onTap: () => Navigator.of(context).pop(false),
+                  child: Text("NO"),
+                ),
+                SizedBox(height: 16),
+                new GestureDetector(
+                  onTap: () => Navigator.of(context).pop(true),
+                  child: Text("YES"),
+                ),
+              ],
+            ),
+          ) ??
+          false;
+    }
+    return WillPopScope(
+      onWillPop: _onBackPressed,
+      child: Scaffold(
       backgroundColor: LightColors.kLightYellow,
       body: SafeArea(
         child: Column(
@@ -104,7 +131,7 @@ class HomePage extends StatelessWidget {
                             children: <Widget>[
                               Container(
                                 child: Text(
-                                  'camilo',
+                                  getName().toString(),
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
                                     fontSize: 22.0,
@@ -237,6 +264,7 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
+    )
     );
   }
 }
