@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:ejemplo_construccion/home/screens/calendar_page.dart';
 import 'package:ejemplo_construccion/home/theme/colors/light_colors.dart';
@@ -7,27 +7,17 @@ import 'package:ejemplo_construccion/home/widgets/task_column.dart';
 import 'package:ejemplo_construccion/home/widgets/active_project_card.dart';
 import 'package:ejemplo_construccion/home/widgets/top_container.dart';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomePage extends StatelessWidget {
   static const routeName = '/home';
-  final AuthResult userInfo;
 
   String name;
 
   HomePage({
     Key key,
-    @required this.userInfo,
   }):super(key: key);
 
-  getName(){
-    String name;
-    DocumentReference doc = Firestore.instance.collection('users').document('vGtL0vtWs5iyuXe6hp8E');
-    doc.get().then((value) => {
-      name = value['name']
-    });
-    return name;
-  }
+  
 
 
   Text subheading(String title) {
@@ -56,6 +46,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
+    
     return Scaffold(
       backgroundColor: LightColors.kLightYellow,
       body: SafeArea(
@@ -104,7 +95,7 @@ class HomePage extends StatelessWidget {
                             children: <Widget>[
                               Container(
                                 child: Text(
-                                  'camilo',
+                                  'Bienvenido',
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
                                     fontSize: 22.0,
