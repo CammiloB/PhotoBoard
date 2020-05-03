@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:ejemplo_construccion/matter/dummies/chats.dart';
+import 'package:photoboard/matter/dummies/chats.dart';
 import 'widget/color/light_color.dart';
 import 'widget/global_card.dart';
 
