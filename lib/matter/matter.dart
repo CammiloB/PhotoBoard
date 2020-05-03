@@ -198,7 +198,7 @@ class _MyHomePageState extends State<MyHomePage>
         onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute<void> (
-              builder: (BuildContext context) => Gallery()
+              builder: (BuildContext context) => ProfilePage()
             )
           );
         },
