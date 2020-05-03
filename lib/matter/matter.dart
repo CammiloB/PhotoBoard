@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
-import 'package:ejemplo_construccion/matter/dummies/chats.dart';
+import 'package:photoboard/matter/dummies/chats.dart';
+import 'package:photoboard/camera/camera.dart';
 import 'widget/color/light_color.dart';
 import 'widget/global_card.dart';
 
@@ -195,7 +196,11 @@ class _MyHomePageState extends State<MyHomePage>
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          print("Pressed");
+          Navigator.of(context).push(
+            MaterialPageRoute<void> (
+              builder: (BuildContext context) => Gallery()
+            )
+          );
         },
         tooltip: 'Increment',
         child: Icon(Icons.add, color: Colors.white),

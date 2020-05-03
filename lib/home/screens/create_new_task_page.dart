@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:ejemplo_construccion/home/theme/colors/light_colors.dart';
-import 'package:ejemplo_construccion/home/widgets/top_container.dart';
-import 'package:ejemplo_construccion/home/widgets/back_button.dart';
-import 'package:ejemplo_construccion/home/widgets/my_text_field.dart';
-import 'package:ejemplo_construccion/home/screens/home_page.dart';
+import 'package:photoboard/home/theme/colors/light_colors.dart';
+import 'package:photoboard/home/widgets/top_container.dart';
+import 'package:photoboard/home/widgets/back_button.dart';
+import 'package:photoboard/home/widgets/my_text_field.dart';
+import 'package:photoboard/home/screens/home_page.dart';
 
 class CreateNewTaskPage extends StatelessWidget {
   @override

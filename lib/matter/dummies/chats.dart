@@ -1,4 +1,4 @@
-import 'package:ejemplo_construccion/matter/models/chat.dart';
+import 'package:photoboard/matter/models/chat.dart';
 
 List<Chat> dataDummy = [
   new Chat(

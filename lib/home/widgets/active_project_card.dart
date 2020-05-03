@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:ejemplo_construccion/matter/matter.dart';
+import 'package:photoboard/matter/matter.dart';
 
 class ActiveProjectsCard extends StatelessWidget {
   final Color cardColor;
