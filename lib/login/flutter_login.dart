@@ -23,7 +23,6 @@ export 'src/models/login_data.dart';
 export 'src/providers/login_messages.dart';
 export 'src/providers/login_theme.dart';
 import 'src/constants.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 
 import 'package:ejemplo_construccion/home/screens/home_page.dart';
@@ -231,7 +230,6 @@ class FlutterLogin extends StatefulWidget {
     this.logoTag,
     this.titleTag,
     this.showDebugButtons = false,
-    this.user
   }) : super(key: key);
 
   /// Called when the user hit the submit button when in sign up mode
@@ -282,8 +280,6 @@ class FlutterLogin extends StatefulWidget {
   /// release mode, this will be overrided to false regardless of the value
   /// passed in
   final bool showDebugButtons;
-
-  final AuthResult user;
 
 
   static final FormFieldValidator<String> defaultEmailValidator = (value) {
@@ -600,9 +596,7 @@ class _FlutterLoginState extends State<FlutterLogin>
                         onSubmitCompleted: ()=>{
                           Navigator.of(context).push(
                             MaterialPageRoute<void> (
-                             builder: (BuildContext context) => HomePage(
-                               userInfo: widget.user
-                             )
+                             builder: (BuildContext context) => HomePage()
                               )
                             )
                         },

@@ -1,4 +1,4 @@
-import 'package:camera/camera.dart';
+
 import 'package:flutter/material.dart';
 import 'package:ejemplo_construccion/matter/dummies/chats.dart';
 import 'widget/color/light_color.dart';
@@ -47,9 +47,8 @@ class PrincipalPage extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key key, this.title, this.camera}) : super(key: key);
+  const MyHomePage({Key key, this.title}) : super(key: key);
   final String title;
-  final CameraDescription camera;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();

@@ -19,13 +19,11 @@ dependencies:
   flushbar: ^1.9.1
   flutter_dotenv: ^2.1.0
   package_info: ^0.4.0
-  
   line_icons: ^0.2.0
   responsive_screen: ^1.0.0
-  image_picker:  
-  camera: 
-  path:
-  path_provider:
+  image_picker:  ^0.6.5+3
+  path: ^1.6.4
+  path_provider: ^1.6.7
   flutter_bloc: ^3.2.0
 
   percent_indicator: ^2.1.3
@@ -35,15 +33,10 @@ dependencies:
   
 
   cupertino_icons: ^0.1.2
-  avatar_glow:
+  avatar_glow: 1.1.0
   table_calendar: ^2.2.3
   google_fonts: 0.2.0
   flutter_spinkit: 4.1.2
-
-  cloud_firestore: ^0.13.0+1
-
-  firebase_auth:
-  google_sign_in:
 
   
 
