@@ -597,7 +597,7 @@ class _FlutterLoginState extends State<FlutterLogin>
                         emailValidator: emailValidator,
                         passwordValidator: passwordValidator,
                         onSubmit: _reverseHeaderAnimation,
-                        onSubmitCompleted: null /*()=>{
+                        onSubmitCompleted: ()=>{
                           Navigator.of(context).push(
                             MaterialPageRoute<void> (
                              builder: (BuildContext context) => HomePage(
@@ -605,7 +605,7 @@ class _FlutterLoginState extends State<FlutterLogin>
                              )
                               )
                             )
-                        }*/,
+                        },
                       ),
                     ),
                     Positioned(
