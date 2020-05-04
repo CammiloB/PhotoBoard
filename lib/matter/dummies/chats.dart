@@ -6,7 +6,7 @@ List<Chat> dataDummy = [
     title: 'Ingles',
     message: 'HomeWork',
     time: '19:25'
-  ),
+  ),/*
   new Chat(
     avatar: 'https://randomuser.me/api/portraits/book.jpg',
     title: 'Español',
@@ -18,5 +18,5 @@ List<Chat> dataDummy = [
     title: 'Sociales',
     message: 'Nitches',
     time: '19:22'
-  )
+  )*/
 ];
