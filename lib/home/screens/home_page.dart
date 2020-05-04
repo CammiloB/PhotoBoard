@@ -11,14 +11,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomePage extends StatelessWidget {
   static const routeName = '/home';
-  final String email;
-  final String password;
+  final AuthResult user;
   
 
   HomePage({
     Key key,
-    @required this.email,
-    @required this.password
+    @required this.user
   }) : super(key: key){}
 
 
@@ -66,7 +64,7 @@ class HomePage extends StatelessWidget {
       Duration(seconds: 5),
       () => Firestore.instance
           .collection('users')
-          .document('8BfwaGl5MFOttjICH9OW9P3AUMr2')
+          .document(this.user.user.uid)
           .get()
           .then((value) => value['name']));
 

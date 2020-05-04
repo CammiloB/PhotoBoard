@@ -221,8 +221,7 @@ class FlutterLogin extends StatefulWidget {
     @required this.onSignup,
     @required this.onLogin,
     @required this.onRecoverPassword,
-    @required this.email,
-    @required this.password,
+    @required this.user,
     this.title = 'LOGIN',
     this.logo,
     this.messages,
@@ -284,8 +283,7 @@ class FlutterLogin extends StatefulWidget {
   /// passed in
   final bool showDebugButtons;
 
-  final String email;
-  final String password;
+  final AuthResult user;
 
 
   static final FormFieldValidator<String> defaultEmailValidator = (value) {
@@ -599,16 +597,15 @@ class _FlutterLoginState extends State<FlutterLogin>
                         emailValidator: emailValidator,
                         passwordValidator: passwordValidator,
                         onSubmit: _reverseHeaderAnimation,
-                        onSubmitCompleted: ()=>{
+                        onSubmitCompleted: null /*()=>{
                           Navigator.of(context).push(
                             MaterialPageRoute<void> (
                              builder: (BuildContext context) => HomePage(
-                               email: widget.email,
-                               password: widget.password,
+                               user: widget.user
                              )
                               )
                             )
-                        },
+                        }*/,
                       ),
                     ),
                     Positioned(

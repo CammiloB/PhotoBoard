@@ -13,15 +13,13 @@ void main() => runApp(new MyApp());
 
 class MyApp extends StatelessWidget {
   Duration get loginTime => Duration(seconds: timeDilation.ceil() * 1 );
-  String email;
-  String password;
+  AuthResult user;
 
   Future<String> _loginUser (LoginData data) async{
     return Future.delayed(loginTime).then((_) async {
         try{
           AuthResult result = await FirebaseAuth.instance.signInWithEmailAndPassword(email: data.name, password: data.password);
-          this.email = data.name;
-          this.password = data.password;
+          this.user = result;
           return null;
       }catch (e){
         return "Error";
@@ -33,12 +31,21 @@ class MyApp extends StatelessWidget {
     return Future.delayed(loginTime).then((_) async {
         try{
           AuthResult result = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: data.name, password: data.password);
-          this.email = data.name;
-          this.password = data.password;
+          this.user = result;
           Firestore.instance.collection('users').document(result.user.uid).setData({
             'name': 'pruebaCamilo'
           });
         return null;
+      }catch (e){
+        return "Error";
+      }
+    });
+  }
+
+  Future<String> _onRecoverPassword(String email) async {
+    return Future.delayed(loginTime).then((_) async {
+      try {
+        await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
       }catch (e){
         return "Error";
       }
@@ -66,9 +73,12 @@ class MyApp extends StatelessWidget {
           print('Password: ${loginData.password}');
           return _loginUser(loginData);
         },
-        onRecoverPassword: null,
-        email: this.email,
-        password: this.password,
+        onRecoverPassword: (loginData) {
+          print("Recover Password");
+          print("data: "+loginData);
+          return _onRecoverPassword(loginData);
+        },
+        user: this.user
       ),
       navigatorObservers: [TransitionRouteObserver()],
     );
