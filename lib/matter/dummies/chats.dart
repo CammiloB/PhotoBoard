@@ -1,6 +1,7 @@
 import 'package:photoboard/matter/models/chat.dart';
 
 List<Chat> dataDummy = [
+  
   new Chat(
     avatar: 'https://randomuser.me/api/portraits/book.jpg',
     title: 'Ingles',

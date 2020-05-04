@@ -123,13 +123,13 @@ class _ProfilePageState extends State<ProfilePage> {
                         children: <Widget>[
                           Align(
                             alignment: Alignment.centerLeft,
-                            child: Text('Username',
+                            child: Text('Materia',
                                 style: TextStyle(
                                     color: Colors.blueGrey, fontSize: 18.0)),
                           ),
                           Align(
                             alignment: Alignment.centerLeft,
-                            child: Text('Michelle James',
+                            child: Text('Ingles',
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 20.0,
@@ -163,13 +163,13 @@ class _ProfilePageState extends State<ProfilePage> {
                         children: <Widget>[
                           Align(
                             alignment: Alignment.centerLeft,
-                            child: Text('Birthday',
+                            child: Text('fecha',
                                 style: TextStyle(
                                     color: Colors.blueGrey, fontSize: 18.0)),
                           ),
                           Align(
                             alignment: Alignment.centerLeft,
-                            child: Text('1st April, 2000',
+                            child: Text('1st April, 2020',
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 20.0,

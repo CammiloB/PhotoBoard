@@ -193,7 +193,7 @@ class _MyHomePageState extends State<MyHomePage>
                           
                           new Text('Ingles', style: TextStyle(fontSize: 32),),
                           Center(
-                          child: new Text('clase de mierda que se toca ver con una perra que tiene la voz mas asquerosa del mundo ', style: TextStyle(fontSize: 22),)                       
+                          child: new Text('clase ingles nivel 2, horario 7 - 8 am  ', style: TextStyle(fontSize: 22),)                       
                           ),
                       /*
                       new Divider(
