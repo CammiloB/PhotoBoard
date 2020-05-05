@@ -1,11 +1,10 @@
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:ejemplo_construccion/matter/dummies/chats.dart';
+import 'package:photoboard/matter/dummies/chats.dart';
+import 'package:photoboard/camera/camera.dart';
 import 'widget/color/light_color.dart';
 import 'widget/global_card.dart';
 
 class PrincipalPage extends StatelessWidget {
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -32,24 +31,23 @@ class PrincipalPage extends StatelessWidget {
     }
 
     return WillPopScope(
-      onWillPop: _onBackPressed,
-      child: MaterialApp(
-      theme: ThemeData(
-          primarySwatch: Colors.blueGrey,
-          primaryColor: Colors.blueGrey[900],
-          primaryColorDark: Colors.blueGrey[900],
-          accentColor: Colors.blueGrey[900]),
-      home: MyHomePage(
-        title: 'PhotoBoard',
-      ),
-    ));
+        onWillPop: _onBackPressed,
+        child: MaterialApp(
+          theme: ThemeData(
+              primarySwatch: Colors.blueGrey,
+              primaryColor: Colors.blueGrey[900],
+              primaryColorDark: Colors.blueGrey[900],
+              accentColor: Colors.blueGrey[900]),
+          home: MyHomePage(
+            title: 'PhotoBoard',
+          ),
+        ));
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key key, this.title, this.camera}) : super(key: key);
+  const MyHomePage({Key key, this.title}) : super(key: key);
   final String title;
-  final CameraDescription camera;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -79,9 +77,9 @@ class _MyHomePageState extends State<MyHomePage>
           indicatorColor: Colors.white,
           controller: _tabController,
           tabs: <Widget>[
-            Tab(text: 'Horario'),
+            Tab(text: 'Galeria'),
             Tab(
-              text: 'Materias',
+              text: 'descripción',
             )
           ],
         ),
@@ -180,8 +178,26 @@ class _MyHomePageState extends State<MyHomePage>
               itemCount: dataDummy.length,
               itemBuilder: (context, i) => new Column(
                     children: <Widget>[
+                      SizedBox(height: 60,),
+                      Material(
+                          elevation: 8.2,
+                          shape: CircleBorder(),
+                          child: CircleAvatar(
+                            backgroundColor: Color(0xFF616161),
+                            child: new Image.network('https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.abc.es%2Fplay%2Fpelicula%2Flos-aristogatos-9442%2F&psig=AOvVaw3ccdGHwkZ9YlngnOQVcnus&ust=1588570870900000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCMjJo-b9lukCFQAAAAAdAAAAABAD',
+                              width: 120.0,
+                              height: 145.0,
+                            ),
+                            radius: 65.0,
+                          )),
+                          
+                          new Text('Ingles', style: TextStyle(fontSize: 32),),
+                          Center(
+                          child: new Text('clase ingles nivel 2, horario 7 - 8 am  ', style: TextStyle(fontSize: 22),)                       
+                          ),
+                      /*
                       new Divider(
-                        height: 10,
+                        height: 600,
                       ),
                       new ListTile(
                         leading: new CircleAvatar(
@@ -189,14 +205,15 @@ class _MyHomePageState extends State<MyHomePage>
                             ),
                         title: new Text(dataDummy[i].title),
                         subtitle: new Text(dataDummy[i].message),
-                      )
+                      )*/
                     ],
                   ))
         ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          print("Pressed");
+          Navigator.of(context).push(MaterialPageRoute<void>(
+              builder: (BuildContext context) => ProfilePage()));
         },
         tooltip: 'Increment',
         child: Icon(Icons.add, color: Colors.white),

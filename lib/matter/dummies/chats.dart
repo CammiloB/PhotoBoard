@@ -1,12 +1,13 @@
-import 'package:ejemplo_construccion/matter/models/chat.dart';
+import 'package:photoboard/matter/models/chat.dart';
 
 List<Chat> dataDummy = [
+  
   new Chat(
     avatar: 'https://randomuser.me/api/portraits/book.jpg',
     title: 'Ingles',
     message: 'HomeWork',
     time: '19:25'
-  ),
+  ),/*
   new Chat(
     avatar: 'https://randomuser.me/api/portraits/book.jpg',
     title: 'Español',
@@ -18,5 +19,5 @@ List<Chat> dataDummy = [
     title: 'Sociales',
     message: 'Nitches',
     time: '19:22'
-  )
+  )*/
 ];

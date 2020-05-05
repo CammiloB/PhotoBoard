@@ -1,6 +1,7 @@
 library flutter_login;
 
 import 'dart:math';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:flutter/foundation.dart';
@@ -23,10 +24,9 @@ export 'src/models/login_data.dart';
 export 'src/providers/login_messages.dart';
 export 'src/providers/login_theme.dart';
 import 'src/constants.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 
-import 'package:ejemplo_construccion/home/screens/home_page.dart';
+import 'package:photoboard/home/screens/home_page.dart';
 
 class _AnimationTimeDilationDropdown extends StatelessWidget {
   _AnimationTimeDilationDropdown({
@@ -221,6 +221,7 @@ class FlutterLogin extends StatefulWidget {
     @required this.onSignup,
     @required this.onLogin,
     @required this.onRecoverPassword,
+    @required this.user,
     this.title = 'LOGIN',
     this.logo,
     this.messages,
@@ -231,7 +232,6 @@ class FlutterLogin extends StatefulWidget {
     this.logoTag,
     this.titleTag,
     this.showDebugButtons = false,
-    this.user
   }) : super(key: key);
 
   /// Called when the user hit the submit button when in sign up mode
@@ -601,7 +601,7 @@ class _FlutterLoginState extends State<FlutterLogin>
                           Navigator.of(context).push(
                             MaterialPageRoute<void> (
                              builder: (BuildContext context) => HomePage(
-                               userInfo: widget.user
+                               user: widget.user
                              )
                               )
                             )

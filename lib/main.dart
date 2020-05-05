@@ -1,30 +1,40 @@
 import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:flutter/material.dart';
-import 'package:ejemplo_construccion/login/flutter_login.dart';
-import 'package:ejemplo_construccion/login/src/users.dart';
+import 'package:photoboard/login/flutter_login.dart';
 
-import 'package:ejemplo_construccion/home/screens/home_page.dart';
 import 'transition_route_observer.dart';
-import 'custom_route.dart';
-
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'dart:io';
+
 
 
 void main() => runApp(new MyApp());
 
 class MyApp extends StatelessWidget {
-  Duration get loginTime => Duration(milliseconds: timeDilation.ceil() * 0);
+  Duration get loginTime => Duration(seconds: timeDilation.ceil() * 1 );
   AuthResult user;
 
-  Future<String> _loginUser(LoginData data){
+  Future<String> _loginUser (LoginData data) async{
     return Future.delayed(loginTime).then((_) async {
-      try{
-        AuthResult result = await FirebaseAuth.instance.signInWithEmailAndPassword(email: data.name, password: data.password);
-        this.user = result;
+        try{
+          AuthResult result = await FirebaseAuth.instance.signInWithEmailAndPassword(email: data.name, password: data.password);
+          this.user = result;
+          return null;
+      }catch (e){
+        return "Error";
+      }
+    });
+  }
+
+  Future<String> _registerUser(LoginData data) async {
+    return Future.delayed(loginTime).then((_) async {
+        try{
+          AuthResult result = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: data.name, password: data.password);
+          this.user = result;
+          Firestore.instance.collection('users').document(result.user.uid).setData({
+            'name': 'pruebaCamilo'
+          });
         return null;
       }catch (e){
         return "Error";
@@ -32,20 +42,16 @@ class MyApp extends StatelessWidget {
     });
   }
 
-  Future<String> _registerUser(LoginData data){
+  Future<String> _onRecoverPassword(String email) async {
     return Future.delayed(loginTime).then((_) async {
-      try{
-        AuthResult result = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: data.name, password: data.password);
-        this.user = result;
-        Firestore.instance.collection('users').add({
-          'name': 'camilo'
-        }); 
-        return null;
+      try {
+        await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
       }catch (e){
         return "Error";
       }
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +73,11 @@ class MyApp extends StatelessWidget {
           print('Password: ${loginData.password}');
           return _loginUser(loginData);
         },
-        onRecoverPassword: null,
+        onRecoverPassword: (loginData) {
+          print("Recover Password");
+          print("data: "+loginData);
+          return _onRecoverPassword(loginData);
+        },
         user: this.user
       ),
       navigatorObservers: [TransitionRouteObserver()],

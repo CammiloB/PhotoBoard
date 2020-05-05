@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:ejemplo_construccion/home/dates_list.dart';
-import 'package:ejemplo_construccion/home/theme/colors/light_colors.dart';
-import 'package:ejemplo_construccion/home/widgets/calendar_dates.dart';
-import 'package:ejemplo_construccion/home/widgets/task_container.dart';
-import 'package:ejemplo_construccion/home/screens/create_new_task_page.dart';
-import 'package:ejemplo_construccion/home/widgets/back_button.dart';
+import 'package:photoboard/home/dates_list.dart';
+import 'package:photoboard/home/theme/colors/light_colors.dart';
+import 'package:photoboard/home/widgets/calendar_dates.dart';
+import 'package:photoboard/home/widgets/task_container.dart';
+import 'package:photoboard/home/screens/create_new_task_page.dart';
+import 'package:photoboard/home/widgets/back_button.dart';
 
 class CalendarPage extends StatelessWidget {
   Widget _dashedText() {
