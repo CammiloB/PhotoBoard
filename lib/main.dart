@@ -5,38 +5,38 @@ import 'package:photoboard/login/flutter_login.dart';
 import 'transition_route_observer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:photoboard/home/screens/home_page.dart';
 
-
-
+import 'package:photoboard/login/auth.dart';
 
 void main() => runApp(new MyApp());
 
 class MyApp extends StatelessWidget {
-  Duration get loginTime => Duration(seconds: timeDilation.ceil() * 1 );
-  AuthResult user;
+  Duration get loginTime => Duration(seconds: timeDilation.ceil() * 1);
+  String userId;
+  final auth = new AuthUser();
 
-  Future<String> _loginUser (LoginData data) async{
+  Future<String> _loginUser(LoginData data, BuildContext context) async {
     return Future.delayed(loginTime).then((_) async {
-        try{
-          AuthResult result = await FirebaseAuth.instance.signInWithEmailAndPassword(email: data.name, password: data.password);
-          this.user = result;
-          return null;
-      }catch (e){
-        return "Error";
+      try {
+        await auth.signIn(data.name, data.password);
+        return null;
+      } catch (e) {
+        return "Error " + e.toString();
       }
     });
   }
 
   Future<String> _registerUser(LoginData data) async {
     return Future.delayed(loginTime).then((_) async {
-        try{
-          AuthResult result = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: data.name, password: data.password);
-          this.user = result;
-          Firestore.instance.collection('users').document(result.user.uid).setData({
-            'name': 'pruebaCamilo'
-          });
+      try {
+        userId = await auth.createUser(data.name, data.password);
+        Firestore.instance
+            .collection('users')
+            .document(userId)
+            .setData({'name': 'pruebaCamilo'});
         return null;
-      }catch (e){
+      } catch (e) {
         return "Error";
       }
     });
@@ -46,41 +46,43 @@ class MyApp extends StatelessWidget {
     return Future.delayed(loginTime).then((_) async {
       try {
         await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
-      }catch (e){
+      } catch (e) {
         return "Error";
       }
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
-      title: 'Login',
-      theme: new ThemeData(
-        primarySwatch: Colors.blueGrey,
-      ),
-      home: FlutterLogin(
-        onSignup: (loginData) {
-          print('Register Info');
-          print('Name: ${loginData.name}');
-          print('Password: ${loginData.password}');
-          return _registerUser(loginData);
-        },
-        onLogin: (loginData) {
-          print('Login info');
-          print('Name: ${loginData.name}');
-          print('Password: ${loginData.password}');
-          return _loginUser(loginData);
-        },
-        onRecoverPassword: (loginData) {
-          print("Recover Password");
-          print("data: "+loginData);
-          return _onRecoverPassword(loginData);
-        },
-        user: this.user
-      ),
-      navigatorObservers: [TransitionRouteObserver()],
-    );
+    return FutureBuilder<String>(
+        future: auth.currentUser(),
+        builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+          return new MaterialApp(
+            title: 'Login',
+            theme: new ThemeData(
+              primarySwatch: Colors.blueGrey,
+            ),
+            home: FlutterLogin(
+                onSignup: (loginData) {
+                  print('Register Info');
+                  print('Name: ${loginData.name}');
+                  print('Password: ${loginData.password}');
+                  return _registerUser(loginData);
+                },
+                onLogin: (loginData) {
+                  print('Login info');
+                  print('Name: ${loginData.name}');
+                  print('Password: ${loginData.password}');
+                  return _loginUser(loginData, context);
+                },
+                onRecoverPassword: (loginData) {
+                  print("Recover Password");
+                  print("data: " + loginData);
+                  return _onRecoverPassword(loginData);
+                },
+                userId: snapshot.data),
+            navigatorObservers: [TransitionRouteObserver()],
+          );
+        });
   }
 }

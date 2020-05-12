@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:photoboard/home/screens/calendar_page.dart';
 import 'package:photoboard/home/theme/colors/light_colors.dart';
@@ -8,17 +7,15 @@ import 'package:photoboard/home/widgets/active_project_card.dart';
 import 'package:photoboard/home/widgets/top_container.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:photoboard/login/auth.dart';
 
 class HomePage extends StatelessWidget {
   static const routeName = '/home';
-  final AuthResult user;
-  
+  final String userId;
 
-  HomePage({
-    Key key,
-    @required this.user
-  }) : super(key: key){}
-
+  HomePage({Key key, @required this.userId}) : super(key: key) {
+    print("CCCCC: "+this.userId);
+  }
 
   Text subheading(String title) {
     return Text(
@@ -43,28 +40,23 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  static CircleAvatar addIcon(){
+  static CircleAvatar addIcon() {
     return CircleAvatar(
       radius: 25.0,
       backgroundColor: LightColors.kGreen,
-      child: Icon(
-        Icons.add,
-        size: 20.0,
-        color: Colors.white
-      ),
+      child: Icon(Icons.add, size: 20.0, color: Colors.white),
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    
+
     Future<String> getName = Future<String>.delayed(
       Duration(seconds: 5),
       () => Firestore.instance
           .collection('users')
-          .document(this.user.user.uid)
+          .document(this.userId)
           .get()
           .then((value) => value['name']));
 
@@ -72,7 +64,6 @@ class HomePage extends StatelessWidget {
       future: getName,
       builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
         Widget children;
-
         if (snapshot.hasData) {
           children = Text(
             snapshot.data,
@@ -129,10 +120,10 @@ class HomePage extends StatelessWidget {
                                 progressColor: LightColors.kRed,
                                 backgroundColor: LightColors.kDarkYellow,
                                 center: CircleAvatar(
-                                  backgroundColor: LightColors.kBlue,
-                                  radius: 35.0,
-                                  backgroundImage: new ExactAssetImage('assets/foto1.png')
-                                ),
+                                    backgroundColor: LightColors.kBlue,
+                                    radius: 35.0,
+                                    backgroundImage: new ExactAssetImage(
+                                        'assets/foto1.png')),
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -220,7 +211,7 @@ class HomePage extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                               Row(
+                              Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,

@@ -27,6 +27,7 @@ import 'src/constants.dart';
 
 
 import 'package:photoboard/home/screens/home_page.dart';
+import 'package:photoboard/login/auth.dart';
 
 class _AnimationTimeDilationDropdown extends StatelessWidget {
   _AnimationTimeDilationDropdown({
@@ -221,7 +222,7 @@ class FlutterLogin extends StatefulWidget {
     @required this.onSignup,
     @required this.onLogin,
     @required this.onRecoverPassword,
-    @required this.user,
+    @required this.userId,
     this.title = 'LOGIN',
     this.logo,
     this.messages,
@@ -283,7 +284,9 @@ class FlutterLogin extends StatefulWidget {
   /// passed in
   final bool showDebugButtons;
 
-  final AuthResult user;
+  final String userId;
+
+
 
 
   static final FormFieldValidator<String> defaultEmailValidator = (value) {
@@ -601,10 +604,10 @@ class _FlutterLoginState extends State<FlutterLogin>
                           Navigator.of(context).push(
                             MaterialPageRoute<void> (
                              builder: (BuildContext context) => HomePage(
-                               user: widget.user
+                               userId: widget.userId
                              )
                               )
-                            )
+                          )
                         },
                       ),
                     ),
