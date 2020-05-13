@@ -5,34 +5,15 @@ import 'widget/color/light_color.dart';
 import 'widget/global_card.dart';
 
 class PrincipalPage extends StatelessWidget {
+  final String pageId;
+
+  PrincipalPage({Key key, @required this.pageId}) : super(key: key) {}
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    Future<bool> _onBackPressed() {
-      return showDialog(
-            context: context,
-            builder: (context) => new AlertDialog(
-              title: new Text('Are you sure?'),
-              content: new Text('Do you want to exit an App'),
-              actions: <Widget>[
-                new GestureDetector(
-                  onTap: () => Navigator.of(context).pop(false),
-                  child: Text("NO"),
-                ),
-                SizedBox(height: 16),
-                new GestureDetector(
-                  onTap: () => Navigator.of(context).pop(true),
-                  child: Text("YES"),
-                ),
-              ],
-            ),
-          ) ??
-          false;
-    }
 
-    return WillPopScope(
-        onWillPop: _onBackPressed,
-        child: MaterialApp(
+    return  MaterialApp(
           theme: ThemeData(
               primarySwatch: Colors.blueGrey,
               primaryColor: Colors.blueGrey[900],
@@ -40,14 +21,16 @@ class PrincipalPage extends StatelessWidget {
               accentColor: Colors.blueGrey[900]),
           home: MyHomePage(
             title: 'PhotoBoard',
+            pageId: pageId,
           ),
-        ));
+        );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key key, this.title}) : super(key: key);
+  const MyHomePage({Key key, this.title, this.pageId}) : super(key: key);
   final String title;
+  final String pageId;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -71,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(widget.title + " "+ widget.pageId),
         elevation: 0.5,
         bottom: TabBar(
           indicatorColor: Colors.white,

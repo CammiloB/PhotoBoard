@@ -13,13 +13,13 @@ class AuthUser implements BaseAuth {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   Future<String> signIn(String email, String password) async {
-    AuthResult user = await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
-    return user.user.uid;
+    FirebaseUser user = (await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password)).user;
+    return user.uid;
   }
 
   Future<String> createUser(String email, String password) async {
-    AuthResult user = await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
-    return user.user.uid;
+    FirebaseUser user = (await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password)).user;
+    return user.uid;
   }
 
   Future<String> currentUser() async {

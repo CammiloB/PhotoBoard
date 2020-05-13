@@ -19,7 +19,9 @@ class ActiveProjectsCard extends StatelessWidget {
   void _onTapDown(TapDownDetails details) {
      Navigator.of(context).push(
         MaterialPageRoute<void> (
-          builder: (BuildContext context) => PrincipalPage()
+          builder: (BuildContext context) => PrincipalPage(
+            pageId: "1",
+          )
         )
       );
   }
@@ -31,7 +33,7 @@ class ActiveProjectsCard extends StatelessWidget {
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 10.0),
         padding: EdgeInsets.all(15.0),
-        height: 200,
+        height: 100,
         decoration: BoxDecoration(
           color: cardColor,
           borderRadius: BorderRadius.circular(40.0),
