@@ -21,6 +21,7 @@ class ActiveProjectsCard extends StatelessWidget {
         MaterialPageRoute<void> (
           builder: (BuildContext context) => PrincipalPage(
             pageId: "1",
+            userId: "dsadasd"
           )
         )
       );

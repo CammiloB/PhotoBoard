@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
@@ -6,6 +7,8 @@ import 'dart:io';
 import 'package:path/path.dart';
 
 class ProfilePage extends StatefulWidget {
+  final String userId;
+  ProfilePage({Key key, @required this.userId}): super(key: key);
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
@@ -31,8 +34,7 @@ class _ProfilePageState extends State<ProfilePage> {
     }
 
     Future uploadPic(BuildContext context) async{
-      String fileName = basename(_image.path);
-       StorageReference firebaseStorageRef = FirebaseStorage.instance.ref().child(fileName);
+       StorageReference firebaseStorageRef = FirebaseStorage.instance.ref().child("${widget.userId}/${basename(_image.path)}");
        StorageUploadTask uploadTask = firebaseStorageRef.putFile(_image);
        StorageTaskSnapshot taskSnapshot=await uploadTask.onComplete;
        setState(() {
@@ -74,7 +76,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             _image,
                             fit: BoxFit.fill,
                           ):Image.network(
-                            "https://images.unsplash.com/photo-1502164980785-f8aa41d53611?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
+                            "https://image.freepik.com/vector-gratis/diseno-logo-phoenix_111165-14.jpg",
                             fit: BoxFit.fill,
                           ),
                         ),

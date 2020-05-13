@@ -87,7 +87,8 @@ class HomePage extends StatelessWidget {
                   onTap: () => {
                     Navigator.of(context).push(MaterialPageRoute<void>(
                         builder: (BuildContext context) => PrincipalPage(
-                              pageId: matter['id'] + " ",
+                              pageId: matter['id'],
+                              userId: this.userId
                             )))
                   },
                 ),

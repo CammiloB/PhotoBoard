@@ -6,10 +6,10 @@ import 'widget/global_card.dart';
 
 class PrincipalPage extends StatelessWidget {
   final String pageId;
+  final String userId;
 
-  PrincipalPage({Key key, @required this.pageId}) : super(key: key) {}
+  PrincipalPage({Key key, @required this.pageId, @required this.userId}) : super(key: key) {}
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
 
@@ -22,15 +22,17 @@ class PrincipalPage extends StatelessWidget {
           home: MyHomePage(
             title: 'PhotoBoard',
             pageId: pageId,
+            userId: userId,
           ),
         );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key key, this.title, this.pageId}) : super(key: key);
+  const MyHomePage({Key key, this.title, this.pageId, this.userId}) : super(key: key);
   final String title;
   final String pageId;
+  final String userId;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -167,7 +169,7 @@ class _MyHomePageState extends State<MyHomePage>
                           shape: CircleBorder(),
                           child: CircleAvatar(
                             backgroundColor: Color(0xFF616161),
-                            child: new Image.network('https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.abc.es%2Fplay%2Fpelicula%2Flos-aristogatos-9442%2F&psig=AOvVaw3ccdGHwkZ9YlngnOQVcnus&ust=1588570870900000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCMjJo-b9lukCFQAAAAAdAAAAABAD',
+                            child: new Image.network('https://image.freepik.com/vector-gratis/diseno-logo-phoenix_111165-14.jpg',
                               width: 120.0,
                               height: 145.0,
                             ),
@@ -196,7 +198,9 @@ class _MyHomePageState extends State<MyHomePage>
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute<void>(
-              builder: (BuildContext context) => ProfilePage()));
+              builder: (BuildContext context) => ProfilePage(
+                userId: widget.userId,
+              )));
         },
         tooltip: 'Increment',
         child: Icon(Icons.add, color: Colors.white),
