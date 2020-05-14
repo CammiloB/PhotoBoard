@@ -3,6 +3,7 @@ import 'package:photoboard/matter/dummies/chats.dart';
 import 'package:photoboard/camera/camera.dart';
 import 'widget/color/light_color.dart';
 import 'widget/global_card.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PrincipalPage extends StatelessWidget {
   final String pageId;
@@ -52,11 +53,21 @@ class _MyHomePageState extends State<MyHomePage>
     _tabController = TabController(vsync: this, length: 2, initialIndex: 0);
   }
 
+  Future<String> getMatter = Future<String>.delayed(
+    Duration(seconds: 5),
+    () => Firestore.instance.collection('matters').document('8LKJSepMjMPkMCy39lWelaVo9no2').get().then((value) => value['name'])
+  );
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return FutureBuilder<String>(
+      future: getMatter,
+      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+        Widget title = Text(snapshot.data);
+
+        return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title + " "+ widget.pageId),
+        title: title,
         elevation: 0.5,
         bottom: TabBar(
           indicatorColor: Colors.white,
@@ -205,6 +216,6 @@ class _MyHomePageState extends State<MyHomePage>
         tooltip: 'Increment',
         child: Icon(Icons.add, color: Colors.white),
       ),
-    );
+      );});
   }
 }

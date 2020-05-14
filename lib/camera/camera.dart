@@ -41,6 +41,8 @@ class _ProfilePageState extends State<ProfilePage> {
           print("Profile Picture uploaded");
           Scaffold.of(context).showSnackBar(SnackBar(content: Text('Profile Picture Uploaded')));
        });
+
+      await Firestore.instance.collection('matters').document('weqw311weq').setData({"photo":(await firebaseStorageRef.getDownloadURL()).toString()});
     }
 
     return Scaffold(
