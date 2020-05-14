@@ -63,23 +63,35 @@ class _MyHomePageState extends State<MyHomePage>
     return FutureBuilder<String>(
       future: getMatter,
       builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-        Widget title = Text(snapshot.data);
+        Widget title;
+
+        if(snapshot.hasData){
+          title = Text(snapshot.data);
+        }else if(snapshot.hasError){
+          title= Icon(
+                Icons.error_outline,
+                color: Colors.red,
+                size: 60,
+              );
+        }else{
+          title = CircularProgressIndicator();
+        }
 
         return Scaffold(
-      appBar: AppBar(
-        title: title,
-        elevation: 0.5,
-        bottom: TabBar(
-          indicatorColor: Colors.white,
-          controller: _tabController,
-          tabs: <Widget>[
-            Tab(text: 'Galeria'),
-            Tab(
-              text: 'descripción',
-            )
-          ],
-        ),
-      ),
+          appBar: AppBar(
+            title: title,
+            elevation: 0.5,
+            bottom: TabBar(
+              indicatorColor: Colors.white,
+              controller: _tabController,
+              tabs: <Widget>[
+                Tab(text: 'Galeria'),
+                Tab(
+                  text: 'descripción',
+                )
+              ],
+            ),
+          ),
       body: TabBarView(
         controller: _tabController,
         children: <Widget>[

@@ -6,6 +6,8 @@ import 'package:photoboard/home/widgets/task_column.dart';
 import 'package:photoboard/home/widgets/active_project_card.dart';
 import 'package:photoboard/home/widgets/top_container.dart';
 
+import 'package:photoboard/home/widgets/CustomDialog.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:photoboard/login/auth.dart';
 import 'package:photoboard/matter/matter.dart';
@@ -59,6 +61,15 @@ class HomePage extends StatelessWidget {
         if (!snapshot.hasData) return LinearProgressIndicator();
         return _buildList(context, snapshot.data['matters']);
       },
+    );
+  }
+
+  _dialogAddRecDesp(BuildContext context){
+    showDialog(
+      context: context,
+      builder: (context) {
+        return CustomDialog();
+      }
     );
   }
 
@@ -299,12 +310,7 @@ class HomePage extends StatelessWidget {
                                       subheading('Mis Materias'),
                                       GestureDetector(
                                         onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    CalendarPage()),
-                                          );
+                                          _dialogAddRecDesp(context);
                                         },
                                         child: addIcon(),
                                       ),
