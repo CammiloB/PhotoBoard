@@ -14,6 +14,7 @@ class GlobalSituationCard extends StatelessWidget {
   final Icon icon;
   final Color color;
   final Color cardColor;
+  final String url;
 
   const GlobalSituationCard(
       {Key key,
@@ -24,11 +25,18 @@ class GlobalSituationCard extends StatelessWidget {
       @required this.percentChange,
       this.icon,
       this.cardColor = CardColors.green,
-      @required this.color})
+      @required this.color,
+      @required this.url})
       : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final formatter = new NumberFormat("#,###");
+
+    DecorationImage backgroundPhoto = new DecorationImage(
+      image: new NetworkImage(this.url),
+      fit: BoxFit.cover,
+    );
 
     return Stack(
       children: <Widget>[
@@ -38,10 +46,10 @@ class GlobalSituationCard extends StatelessWidget {
               Container(
                 width: screenWidth(context),
                 height: screenHeight(context, percent: 0.3),
-                margin: EdgeInsets.symmetric(horizontal:25),
+                margin: EdgeInsets.symmetric(horizontal: 25),
                 padding: EdgeInsets.all(5),
                 decoration: BoxDecoration(
-                  image: backgroundImage,
+                  image: backgroundPhoto,
                   borderRadius: BorderRadius.circular(10),
                   boxShadow: [
                     BoxShadow(
@@ -66,23 +74,19 @@ class GlobalSituationCard extends StatelessWidget {
                               color: CardColors.transparentBlack,
                               borderRadius: BorderRadius.circular(5)),
                           child: RichText(
-                            text: 
-                                  TextSpan(
-                                    text: "$cardTitle"
-                                        .toUpperCase(),
-                                    style: GoogleFonts.cabin(
-                                      textStyle: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  )
-                               
-                          ),
+                              text: TextSpan(
+                            text: "$cardTitle".toUpperCase(),
+                            style: GoogleFonts.cabin(
+                              textStyle: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          )),
                         ),
                       ],
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left:20),
+                      padding: const EdgeInsets.only(left: 20),
                       child: Row(
                         children: <Widget>[
                           Column(

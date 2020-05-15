@@ -8,7 +8,8 @@ import 'package:path/path.dart';
 
 class ProfilePage extends StatefulWidget {
   final String userId;
-  ProfilePage({Key key, @required this.userId}): super(key: key);
+  final String pageId;
+  ProfilePage({Key key, @required this.userId, @required this.pageId}): super(key: key);
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
@@ -42,7 +43,7 @@ class _ProfilePageState extends State<ProfilePage> {
           Scaffold.of(context).showSnackBar(SnackBar(content: Text('Profile Picture Uploaded')));
        });
 
-      await Firestore.instance.collection('matters').document('weqw311weq').setData({"photo":(await firebaseStorageRef.getDownloadURL()).toString()});
+      await Firestore.instance.collection('matters').document(widget.pageId).updateData({"photos":FieldValue.arrayUnion([(await firebaseStorageRef.getDownloadURL()).toString()])});
     }
 
     return Scaffold(

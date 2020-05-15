@@ -36,13 +36,16 @@ class MyHomePage extends StatefulWidget {
   final String userId;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _MyHomePageState createState() => _MyHomePageState(pageId: pageId);
 }
 
 class _MyHomePageState extends State<MyHomePage>
     with SingleTickerProviderStateMixin {
   DateTime dateTime;
   Duration duration;
+
+  final String pageId;
+  _MyHomePageState({Key key, @required this.pageId});
 
   TabController _tabController;
   @override
@@ -53,18 +56,57 @@ class _MyHomePageState extends State<MyHomePage>
     _tabController = TabController(vsync: this, length: 2, initialIndex: 0);
   }
 
-  Future<String> getMatter = Future<String>.delayed(
-    Duration(seconds: 5),
-    () => Firestore.instance.collection('matters').document('8LKJSepMjMPkMCy39lWelaVo9no2').get().then((value) => value['name'])
-  );
+   Widget _buildMatters(BuildContext context) {
+    return StreamBuilder<DocumentSnapshot>(
+      stream: Firestore.instance
+          .collection('matters')
+          .document(widget.pageId)
+          .snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return LinearProgressIndicator();
+        return _buildList(context, snapshot.data['photos']);
+      },
+    );
+  }
+
+  Widget _buildList(BuildContext context, List<dynamic> snapshot) {
+    return Column(
+      children: snapshot
+          .map<Widget>(
+            (matter) => Column(children: [
+              GlobalSituationCard(
+                      cardTitle: 'Recovered CASES',
+                      caseTitle: 'Recovered',
+                      currentData: 10000,
+                      newData: 777777777,
+                      percentChange: 100,
+                      cardColor: CardColors.blue,
+                      icon: Icon(
+                        Icons.arrow_upward,
+                        color: Colors.green,
+                      ),
+                      color: Colors.green,
+                      url: matter
+                    ),
+            ]),
+          )
+          .toList(),
+    );
+  }
+
+  
 
   @override
   Widget build(BuildContext context) {
+    Future<String> getMatter = Future<String>.delayed(
+    Duration(seconds: 5),
+    () => Firestore.instance.collection('matters').document(this.pageId).get().then((value) => value['name'])
+  );
     return FutureBuilder<String>(
       future: getMatter,
       builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
         Widget title;
-
+        
         if(snapshot.hasData){
           title = Text(snapshot.data);
         }else if(snapshot.hasError){
@@ -98,88 +140,9 @@ class _MyHomePageState extends State<MyHomePage>
           ListView(
             children: <Widget>[
               SizedBox(height: 50),
-              SingleChildScrollView(
-                  padding: EdgeInsets.only(top: 10),
-                  child: Column(children: <Widget>[
-                    GlobalSituationCard(
-                      cardTitle: 'Recovered CASES',
-                      caseTitle: 'Recovered',
-                      currentData: 10000,
-                      newData: 777777777,
-                      percentChange: 100,
-                      cardColor: CardColors.blue,
-                      icon: Icon(
-                        Icons.arrow_upward,
-                        color: Colors.green,
-                      ),
-                      color: Colors.green,
-                    ),
-                    GlobalSituationCard(
-                      cardTitle: 'Recovered CASES',
-                      caseTitle: 'Recovered',
-                      currentData: 10000,
-                      newData: 777777777,
-                      percentChange: 100,
-                      cardColor: CardColors.blue,
-                      icon: Icon(
-                        Icons.arrow_upward,
-                        color: Colors.green,
-                      ),
-                      color: Colors.green,
-                    ),
-                    GlobalSituationCard(
-                      cardTitle: 'Recovered CASES',
-                      caseTitle: 'Recovered',
-                      currentData: 10000,
-                      newData: 777777777,
-                      percentChange: 100,
-                      cardColor: CardColors.blue,
-                      icon: Icon(
-                        Icons.arrow_upward,
-                        color: Colors.green,
-                      ),
-                      color: Colors.green,
-                    ),
-                    GlobalSituationCard(
-                      cardTitle: 'Recovered CASES',
-                      caseTitle: 'Recovered',
-                      currentData: 10000,
-                      newData: 777777777,
-                      percentChange: 100,
-                      cardColor: CardColors.blue,
-                      icon: Icon(
-                        Icons.arrow_upward,
-                        color: Colors.green,
-                      ),
-                      color: Colors.green,
-                    ),
-                    GlobalSituationCard(
-                      cardTitle: 'Recovered CASES',
-                      caseTitle: 'Recovered',
-                      currentData: 10000,
-                      newData: 777777777,
-                      percentChange: 100,
-                      cardColor: CardColors.blue,
-                      icon: Icon(
-                        Icons.arrow_upward,
-                        color: Colors.green,
-                      ),
-                      color: Colors.green,
-                    ),
-                    GlobalSituationCard(
-                      cardTitle: 'Recovered CASES',
-                      caseTitle: 'Recovered',
-                      currentData: 10000,
-                      newData: 777777777,
-                      percentChange: 100,
-                      cardColor: CardColors.blue,
-                      icon: Icon(
-                        Icons.arrow_upward,
-                        color: Colors.green,
-                      ),
-                      color: Colors.green,
-                    ),
-                  ]))
+              _buildMatters(context),
+              
+              
             ],
           ),
           ListView.builder(
@@ -223,6 +186,7 @@ class _MyHomePageState extends State<MyHomePage>
           Navigator.of(context).push(MaterialPageRoute<void>(
               builder: (BuildContext context) => ProfilePage(
                 userId: widget.userId,
+                pageId: widget.pageId,
               )));
         },
         tooltip: 'Increment',

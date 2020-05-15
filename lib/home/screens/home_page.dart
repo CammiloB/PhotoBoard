@@ -55,7 +55,7 @@ class HomePage extends StatelessWidget {
     return StreamBuilder<DocumentSnapshot>(
       stream: Firestore.instance
           .collection('matter')
-          .document('56dsa23saca')
+          .document(this.userId)
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return LinearProgressIndicator();
@@ -68,7 +68,7 @@ class HomePage extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) {
-        return CustomDialog();
+        return CustomDialog(userId: this.userId);
       }
     );
   }
@@ -96,6 +96,7 @@ class HomePage extends StatelessWidget {
                         fontWeight: FontWeight.w700),
                   )),
                   onTap: () => {
+                    
                     Navigator.of(context).push(MaterialPageRoute<void>(
                         builder: (BuildContext context) => PrincipalPage(
                               pageId: matter['id'],

@@ -3,18 +3,42 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:path/path.dart';
 
 class CustomDialog extends StatefulWidget {
+
+  final String userId;
+  CustomDialog({Key key, @required this.userId}): super(key: key);
+
   @override
   _CustomDialogState createState() => _CustomDialogState();
 }
 
-addMatter(String name) async {
-  await Firestore.instance.collection('matter').document('56dsa23saca').updateData({
-    'matters': FieldValue.arrayUnion([{"name":name}])});
-}
+
 
 class _CustomDialogState extends State<CustomDialog> {
   TextEditingController _controllerName = TextEditingController();
   TextEditingController _controllerDes = TextEditingController();
+
+  
+
+  addMatter(String name) async {
+
+  String id = await Firestore.instance.collection('matters').document().documentID;
+
+  await Firestore.instance.collection('matters').document(id).setData({
+    "description": "Prueba Camilo Descripción",
+    "name": name,
+    "photos": FieldValue.arrayUnion([])
+  });
+
+  try{
+    await Firestore.instance.collection('matter').document(widget.userId).updateData({
+      'matters': FieldValue.arrayUnion([{"id":id, "name":name}])});
+  }catch(e){
+    await Firestore.instance.collection('matter').document(widget.userId).setData({
+      'matters': FieldValue.arrayUnion([{"id":id, "name":name}])});
+  }
+
+  
+  }
 
   @override
   Widget build(BuildContext context) {
