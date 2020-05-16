@@ -19,12 +19,12 @@ class _CustomDialogState extends State<CustomDialog> {
 
   
 
-  addMatter(String name) async {
+  addMatter(String name, String desc) async {
 
   String id = await Firestore.instance.collection('matters').document().documentID;
 
   await Firestore.instance.collection('matters').document(id).setData({
-    "description": "Prueba Camilo Descripción",
+    "description": desc,
     "name": name,
     "photos": FieldValue.arrayUnion([])
   });
@@ -118,7 +118,7 @@ class _CustomDialogState extends State<CustomDialog> {
                       if(_controllerName.text.isNotEmpty && _controllerDes.text.isNotEmpty){
                         print(_controllerName.text);
                         print(_controllerDes.text);
-                        addMatter(_controllerName.text);
+                        addMatter(_controllerName.text, _controllerDes.text);
                       }
                       Navigator.pop(context);
                     },
