@@ -221,44 +221,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     SizedBox(
                       height: 20.0,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Container(
-                            child: Column(
-                              children: <Widget>[
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text('Description',
-                                      style: TextStyle(
-                                          color: Colors.blueGrey,
-                                          fontSize: 18.0)),
-                                ),
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text('Paris, France',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 20.0,
-                                          fontWeight: FontWeight.bold)),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: Container(
-                            child: Icon(
-                              FontAwesomeIcons.pen,
-                              color: Color(0xff476cfb),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                    
                     SizedBox(
                       height: 20.0,
                     ),
