@@ -5,8 +5,13 @@ import 'package:photoboard/home/widgets/calendar_dates.dart';
 import 'package:photoboard/home/widgets/task_container.dart';
 import 'package:photoboard/home/screens/create_new_task_page.dart';
 import 'package:photoboard/home/widgets/back_button.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CalendarPage extends StatelessWidget {
+  final String userId;
+
+  const CalendarPage({Key key, @required this.userId}) : super(key: key);
+
   Widget _dashedText() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 15),
@@ -16,6 +21,44 @@ class CalendarPage extends StatelessWidget {
         style:
             TextStyle(fontSize: 20.0, color: Colors.black12, letterSpacing: 5),
       ),
+    );
+  }
+
+  _dialogAddRecDesp(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return CustomDialog(userId: this.userId);
+        });
+  }
+
+  Widget _buildMatters(BuildContext context) {
+    return StreamBuilder<DocumentSnapshot>(
+      stream: Firestore.instance
+          .collection('tasks')
+          .document(this.userId)
+          .snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return LinearProgressIndicator();
+        return _buildList(context, snapshot.data['tasks']);
+      },
+    );
+  }
+
+  Widget _buildList(BuildContext context, List<dynamic> snapshot) {
+    return Column(
+      children: snapshot
+          .map<Widget>(
+            (matter) => Column(children: [
+              TaskContainer(
+                title: matter['name'],
+                subtitle:
+                    matter['desc'],
+                boxColor: LightColors.kLightGreen,
+              ),
+            ]),
+          )
+          .toList(),
     );
   }
 
@@ -39,7 +82,7 @@ class CalendarPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      'Today',
+                      'Mis Tareas',
                       style: TextStyle(
                           fontSize: 30.0, fontWeight: FontWeight.w700),
                     ),
@@ -52,16 +95,11 @@ class CalendarPage extends StatelessWidget {
                       ),
                       child: FlatButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => CreateNewTaskPage(),
-                            ),
-                          );
+                          _dialogAddRecDesp(context);
                         },
                         child: Center(
                           child: Text(
-                            'Add task',
+                            'Agregar',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w700,
@@ -76,7 +114,7 @@ class CalendarPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    'Productive Day, Sourav',
+                    'Manten tu dia productivo',
                     style: TextStyle(
                       fontSize: 18.0,
                       color: Colors.grey,
@@ -86,30 +124,6 @@ class CalendarPage extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 30),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'April, 2020',
-                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
-                ),
-              ),
-              SizedBox(height: 20.0),
-              Container(
-                height: 58.0,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: days.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return CalendarDates(
-                      day: days[index],
-                      date: dates[index],
-                      dayColor: index == 0 ? LightColors.kRed : Colors.black54,
-                      dateColor:
-                          index == 0 ? LightColors.kRed : LightColors.kDarkBlue,
-                    );
-                  },
-                ),
-              ),
               Expanded(
                 child: SingleChildScrollView(
                   child: Container(
@@ -118,29 +132,6 @@ class CalendarPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Expanded(
-                          flex: 1,
-                          child: ListView.builder(
-                            itemCount: time.length,
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemBuilder: (BuildContext context, int index) =>
-                                Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 15.0),
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  '${time[index]} ${time[index] > 8 ? 'PM' : 'AM'}',
-                                  style: TextStyle(
-                                    fontSize: 16.0,
-                                    color: Colors.black54,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
                         SizedBox(
                           width: 20,
                         ),
@@ -150,30 +141,7 @@ class CalendarPage extends StatelessWidget {
                             shrinkWrap: true,
                             physics: NeverScrollableScrollPhysics(),
                             children: <Widget>[
-                              _dashedText(),
-                              TaskContainer(
-                                title: 'Project Research',
-                                subtitle:
-                                    'Discuss with the colleagues about the future plan',
-                                boxColor: LightColors.kLightYellow2,
-                              ),
-                              _dashedText(),
-                              TaskContainer(
-                                title: 'Work on Medical App',
-                                subtitle: 'Add medicine tab',
-                                boxColor: LightColors.kLavender,
-                              ),
-                              TaskContainer(
-                                title: 'Call',
-                                subtitle: 'Call to david',
-                                boxColor: LightColors.kPalePink,
-                              ),
-                              TaskContainer(
-                                title: 'Design Meeting',
-                                subtitle:
-                                    'Discuss with designers for new task for the medical app',
-                                boxColor: LightColors.kLightGreen,
-                              ),
+                              _buildMatters(context)
                             ],
                           ),
                         )

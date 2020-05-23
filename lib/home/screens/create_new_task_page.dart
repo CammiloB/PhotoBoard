@@ -1,165 +1,137 @@
 import 'package:flutter/material.dart';
-import 'package:photoboard/home/theme/colors/light_colors.dart';
-import 'package:photoboard/home/widgets/top_container.dart';
-import 'package:photoboard/home/widgets/back_button.dart';
-import 'package:photoboard/home/widgets/my_text_field.dart';
-import 'package:photoboard/home/screens/home_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:path/path.dart';
 
-class CreateNewTaskPage extends StatelessWidget {
+class CustomDialog extends StatefulWidget {
+
+  final String userId;
+  CustomDialog({Key key, @required this.userId}): super(key: key);
+
+  @override
+  _CustomDialogState createState() => _CustomDialogState();
+}
+
+
+
+class _CustomDialogState extends State<CustomDialog> {
+  TextEditingController _controllerName = TextEditingController();
+  TextEditingController _controllerDes = TextEditingController();
+
+  
+
+  addMatter(String name, String desc) async {
+
+  String id = await Firestore.instance.collection('tasks').document().documentID;
+    await Firestore.instance.collection('tasks').document(widget.userId).updateData({
+      'tasks': FieldValue.arrayUnion([{"id":id, "name":name, "desc":desc}])});
+  }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    var downwardIcon = Icon(
-      Icons.keyboard_arrow_down,
-      color: Colors.black54,
-    );
-    return Scaffold(
-      body: SafeArea(
+    return AlertDialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(width * 0.050)),
+      title: Text(
+        'Agregar Materia',
+        textAlign: TextAlign.center,
+        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+      ),
+      backgroundColor: Colors.green[400],
+      content: SingleChildScrollView(
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            TopContainer(
-              padding: EdgeInsets.fromLTRB(20, 20, 20, 40),
-              width: width,
-              child: Column(
-                children: <Widget>[
-                  MyBackButton(),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        'Create new task',
-                        style: TextStyle(
-                            fontSize: 30.0, fontWeight: FontWeight.w700),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                  Container(
-                      child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      MyTextField(label: 'Title'),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: <Widget>[
-                          Expanded(
-                            child: MyTextField(
-                              label: 'Date',
-                              icon: downwardIcon,
-                            ),
-                          ),
-                          HomePage.calendarIcon(),
-                        ],
-                      )
-                    ],
-                  ))
-                ],
+            Text("Nombre:   ",
+                textAlign: TextAlign.start,
+                style: TextStyle(color: Colors.white, fontSize: width * 0.06)),
+            Flexible(
+              child: TextField(
+                controller: _controllerName,
+                style: TextStyle(fontSize: width * 0.05),
+                maxLines: 1,
+                textAlign: TextAlign.start,
+                decoration: new InputDecoration(
+                    hintText: "Nombre Materia",
+                    contentPadding: EdgeInsets.only(
+                        left: width * 0.04,
+                        top: width * 0.041,
+                        bottom: width * 0.041,
+                        right: width * 0.04),
+                    focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(width * 0.04),
+                        borderSide:
+                            BorderSide(color: Colors.white, width: 2.0))),
               ),
             ),
-            Expanded(
-                child: SingleChildScrollView(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
+            SizedBox(height: 30,),
+            Flexible(
+              child: TextField(
+                controller: _controllerDes,
+                style: TextStyle(fontSize: width * 0.05),
+                maxLines: 12,
+                textAlign: TextAlign.start,
+                decoration: new InputDecoration(
+                    hintText: "Descripción",
+                    contentPadding: EdgeInsets.only(
+                        left: width * 0.04,
+                        top: width * 0.041,
+                        bottom: width * 0.041,
+                        right: width * 0.04),
+                    focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(width * 0.04),
+                        borderSide:
+                            BorderSide(color: Colors.white, width: 2.0)),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(width * 0.04),
+                      borderSide: BorderSide(color: Colors.white, width: 2.0)
+                    )),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: width * 0.09),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Expanded(
-                          child: MyTextField(
-                        label: 'Start Time',
-                        icon: downwardIcon,
-                      )),
-                      SizedBox(width: 40),
-                      Expanded(
-                        child: MyTextField(
-                          label: 'End Time',
-                          icon: downwardIcon,
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.pop(context);
+                    },
+                    child: Text("Cancelar", style: TextStyle(color: Colors.white)),
+                  ),
+                  GestureDetector(
+                    onTap: (){
+                      if(_controllerName.text.isNotEmpty && _controllerDes.text.isNotEmpty){
+                        print(_controllerName.text);
+                        print(_controllerDes.text);
+                        addMatter(_controllerName.text, _controllerDes.text);
+                      }
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                        padding: EdgeInsets.only(
+                            top: width * 0.02, 
+                            bottom: width * 0.02, 
+                            left: width * 0.03, 
+                            right: width * 0.03),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: Colors.white,
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                  MyTextField(
-                    label: 'Description',
-                    minLines: 3,
-                    maxLines: 3,
-                  ),
-                  SizedBox(height: 20),
-                  Container(
-                    alignment: Alignment.topLeft,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          'Category',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.black54,
+                        child: Center(
+                          child: Text(
+                            "Agregar",
+                            style: TextStyle(
+                                color: Colors.red[300],
+                                fontWeight: FontWeight.bold,
+                                fontSize: width * 0.05),
                           ),
                         ),
-                        Wrap(
-                          crossAxisAlignment: WrapCrossAlignment.start,
-                          //direction: Axis.vertical,
-                          alignment: WrapAlignment.start,
-                          verticalDirection: VerticalDirection.down,
-                          runSpacing: 0,
-                          //textDirection: TextDirection.rtl,
-                          spacing: 10.0,
-                          children: <Widget>[
-                            Chip(
-                              label: Text("SPORT APP"),
-                              backgroundColor: LightColors.kRed,
-                              labelStyle: TextStyle(color: Colors.white),
-                            ),
-                            Chip(
-                              label: Text("MEDICAL APP"),
-                            ),
-                            Chip(
-                              label: Text("RENT APP"),
-                            ),
-                            Chip(
-                              label: Text("NOTES"),
-                            ),
-                            Chip(
-                              label: Text("GAMING PLATFORM APP"),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                      ),
                   )
                 ],
               ),
-            )),
-            Container(
-              height: 80,
-              width: width,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Container(
-                    child: Text(
-                      'Create Task',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 18),
-                    ),
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.fromLTRB(20, 10, 20, 20),
-                    width: width - 40,
-                    decoration: BoxDecoration(
-                      color: LightColors.kBlue,
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            )
           ],
         ),
       ),

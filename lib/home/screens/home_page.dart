@@ -261,7 +261,9 @@ class HomePage extends StatelessWidget {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    CalendarPage()),
+                                                    CalendarPage(
+                                                      userId: userId,
+                                                    )),
                                           );
                                         },
                                         child: calendarIcon(),

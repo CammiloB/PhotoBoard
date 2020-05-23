@@ -5,6 +5,7 @@ import 'widget/color/light_color.dart';
 import 'widget/global_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+
 class PrincipalPage extends StatelessWidget {
   final String pageId;
   final String userId;
@@ -76,18 +77,14 @@ class _MyHomePageState extends State<MyHomePage>
           .map<Widget>(
             (matter) => Column(children: [
               GlobalSituationCard(
-                  cardTitle: 'Recovered CASES',
-                  caseTitle: 'Recovered',
-                  currentData: 10000,
-                  newData: 777777777,
-                  percentChange: 100,
+                  percentChange: matter['date'],
                   cardColor: CardColors.blue,
                   icon: Icon(
                     Icons.arrow_upward,
                     color: Colors.green,
                   ),
                   color: Colors.green,
-                  url: matter),
+                  url: matter['url']),
             ]),
           )
           .toList(),
