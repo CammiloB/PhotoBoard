@@ -51,14 +51,16 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildMatters(BuildContext context) {
+  Widget _buildMatters(BuildContext context)  {
     return StreamBuilder<DocumentSnapshot>(
       stream: Firestore.instance
           .collection('matter')
           .document(this.userId)
           .snapshots(),
       builder: (context, snapshot) {
-        if (!snapshot.hasData) return LinearProgressIndicator();
+        if (!snapshot.hasData) return Scaffold(
+          body: Text("No tienes materias para mostrar"),
+        );
         return _buildList(context, snapshot.data['matters']);
       },
     );

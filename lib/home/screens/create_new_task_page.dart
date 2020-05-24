@@ -21,9 +21,15 @@ class _CustomDialogState extends State<CustomDialog> {
 
   addMatter(String name, String desc) async {
 
+    try{
   String id = await Firestore.instance.collection('tasks').document().documentID;
     await Firestore.instance.collection('tasks').document(widget.userId).updateData({
       'tasks': FieldValue.arrayUnion([{"id":id, "name":name, "desc":desc}])});
+    }catch(e){
+      String id = await Firestore.instance.collection('tasks').document().documentID;
+    await Firestore.instance.collection('tasks').document(widget.userId).setData({
+      'tasks': FieldValue.arrayUnion([{"id":id, "name":name, "desc":desc}])});
+    }
   }
 
   @override
