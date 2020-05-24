@@ -3,13 +3,11 @@ import 'package:photoboard/home/screens/calendar_page.dart';
 import 'package:photoboard/home/theme/colors/light_colors.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:photoboard/home/widgets/task_column.dart';
-import 'package:photoboard/home/widgets/active_project_card.dart';
 import 'package:photoboard/home/widgets/top_container.dart';
 
 import 'package:photoboard/home/widgets/CustomDialog.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:photoboard/login/auth.dart';
 import 'package:photoboard/matter/matter.dart';
 
 import 'Dart:io';
@@ -51,21 +49,6 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildMatters(BuildContext context)  {
-    return StreamBuilder<DocumentSnapshot>(
-      stream: Firestore.instance
-          .collection('matter')
-          .document(this.userId)
-          .snapshots(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) return Scaffold(
-          body: Text("No tienes materias para mostrar"),
-        );
-        return _buildList(context, snapshot.data['matters']);
-      },
-    );
-  }
-
   _dialogAddRecDesp(BuildContext context){
     showDialog(
       context: context,
@@ -74,6 +57,45 @@ class HomePage extends StatelessWidget {
       }
     );
   }
+
+  Widget _buildMatters(BuildContext context)  {
+    return StreamBuilder<DocumentSnapshot>(
+      stream: Firestore.instance
+          .collection('matter')
+          .document(this.userId)
+          .snapshots(),
+      builder: (context, snapshot) {
+        print("LLLLLLLLLLL: "+snapshot.data['matters'].length.toString());
+        if (snapshot.data['matters'].length == 0){ 
+          print("CCCCCCCCCCCC: Entre al hasData");
+          return Column(
+            children: [
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 10.0),
+                padding: EdgeInsets.all(15.0),
+                height: 100,
+                child: Center(
+                    child: Text(
+                    "No hay materias para mostrar, Agrega una",
+                    style: TextStyle(
+                        fontSize: 14.0,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700),
+                  )),
+              
+                  
+                ),
+            ],
+          );
+        }
+        return _buildList(context, snapshot.data['matters']);
+
+      },
+    );
+  }
+
+
+  
 
   Widget _buildList(BuildContext context, List<dynamic> snapshot) {
     return Column(
@@ -337,19 +359,4 @@ class HomePage extends StatelessWidget {
           },
         ));
   }
-}
-
-class Record {
-  final String name;
-  final DocumentReference reference;
-
-  Record.fromMap(Map<String, dynamic> map, {this.reference})
-      : assert(map['name'] != null),
-        name = map['name'];
-
-  Record.fromSnapshot(DocumentSnapshot snapshot)
-      : this.fromMap(snapshot.data, reference: snapshot.reference);
-
-  @override
-  String toString() => "Record<$name>";
 }

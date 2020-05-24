@@ -33,8 +33,10 @@ class MyApp extends StatelessWidget {
         userId = await auth.createUser(data.name, data.password);
         Firestore.instance
             .collection('users')
-            .document(userId)
+            .document(userId) 
             .setData({'name': 'pruebaCamilo'});
+        Firestore.instance.collection('matter').document(userId).setData({"matters":FieldValue.arrayUnion([])});
+        Firestore.instance.collection('tasks').document(userId).setData({"tasks":FieldValue.arrayUnion([])});
         return null;
       } catch (e) {
         return "Error";
