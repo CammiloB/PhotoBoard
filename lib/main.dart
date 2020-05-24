@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
         Firestore.instance
             .collection('users')
             .document(userId) 
-            .setData({'name': 'pruebaCamilo'});
+            .setData({'name': data.username});
         Firestore.instance.collection('matter').document(userId).setData({"matters":FieldValue.arrayUnion([])});
         Firestore.instance.collection('tasks').document(userId).setData({"tasks":FieldValue.arrayUnion([])});
         return null;

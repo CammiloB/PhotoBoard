@@ -4,6 +4,7 @@ class LoginMessages with ChangeNotifier {
   LoginMessages({
     this.usernameHint: defaultUsernameHint,
     this.passwordHint: defaultPasswordHint,
+    this.nameHint: defaultNameHint,
     this.confirmPasswordHint: defaultConfirmPasswordHint,
     this.forgotPasswordButton: defaultForgotPasswordButton,
     this.loginButton: defaultLoginButton,
@@ -18,6 +19,7 @@ class LoginMessages with ChangeNotifier {
 
   static const defaultUsernameHint = 'Email';
   static const defaultPasswordHint = 'Password';
+  static const defaultNameHint = "Name";
   static const defaultConfirmPasswordHint = 'Confirm Password';
   static const defaultForgotPasswordButton = 'Forgot Password?';
   static const defaultLoginButton = 'LOGIN';
@@ -35,6 +37,8 @@ class LoginMessages with ChangeNotifier {
 
   /// Hint text of the password [TextField]
   final String passwordHint;
+
+  final String nameHint;
 
   /// Hint text of the confirm password [TextField]
   final String confirmPasswordHint;
