@@ -5,7 +5,6 @@ import 'widget/color/light_color.dart';
 import 'widget/global_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-
 class PrincipalPage extends StatelessWidget {
   final String pageId;
   final String userId;
@@ -93,7 +92,16 @@ class _MyHomePageState extends State<MyHomePage>
 
   @override
   Widget build(BuildContext context) {
-    Future<String> getMatter = Future<String>.delayed(
+    Future getMatter = Future.delayed(
+      Duration(seconds: 5),
+      () => Firestore.instance
+            .collection("matter")
+            .document(widget.userId)
+            .get()
+            .then((value) => value['matters'])
+    );
+
+    Future<String> getMatterName = Future<String>.delayed(
         Duration(seconds: 0),
         () => Firestore.instance
             .collection('matters')
@@ -110,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage>
             .then((value) => value['description']));
 
     return FutureBuilder<String>(
-        future: getMatter,
+        future: getMatterName,
         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
           Widget title;
 
@@ -190,9 +198,33 @@ class _MyHomePageState extends State<MyHomePage>
                                 } else {
                                   title = CircularProgressIndicator();
                                 }
-                                return Center(
-                                  child: title);
+                                return Center(child: title);
                               },
+                            ),
+                            FutureBuilder(
+                              future: getMatter,
+                            builder: (BuildContext context,
+                                  AsyncSnapshot snapshot) {
+                                    return FloatingActionButton(
+                              onPressed: () {
+                                if(snapshot.hasData){
+                                  for(int i=0; i<snapshot.data.length; i++){
+                                    if(snapshot.data[i]['id'].toString() == this.pageId.toString()){
+                                      Firestore.instance.collection('matter').document(widget.userId).updateData({
+                                    "matters":FieldValue.arrayRemove([snapshot.data[i]])
+                                  });
+                                    }
+                                  }
+                                  
+                                  Firestore.instance.collection('matters').document(this.pageId).delete();
+                                  Navigator.popUntil(context, ModalRoute.withName('/home'));
+                                  
+                                }
+                                
+                              },
+                              tooltip: 'Increment',
+                              child: Icon(Icons.delete, color: Colors.red),
+                            );},
                             )
                           ],
                         ))

@@ -8,15 +8,19 @@ import 'package:photoboard/home/widgets/top_container.dart';
 import 'package:photoboard/home/widgets/CustomDialog.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:photoboard/login/auth.dart';
 import 'package:photoboard/matter/matter.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'Dart:io';
 
 class HomePage extends StatelessWidget {
   static const routeName = '/home';
   final String userId;
+  final BaseAuth auth;
 
-  HomePage({Key key, @required this.userId}) : super(key: key) {}
+  HomePage({Key key, @required this.userId, this.auth})
+      : super(key: key) {}
 
   Text subheading(String title) {
     return Text(
@@ -49,25 +53,22 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  _dialogAddRecDesp(BuildContext context){
+  _dialogAddRecDesp(BuildContext context) {
     showDialog(
-      context: context,
-      builder: (context) {
-        return CustomDialog(userId: this.userId);
-      }
-    );
+        context: context,
+        builder: (context) {
+          return CustomDialog(userId: this.userId);
+        });
   }
 
-  Widget _buildMatters(BuildContext context)  {
+  Widget _buildMatters(BuildContext context) {
     return StreamBuilder<DocumentSnapshot>(
       stream: Firestore.instance
           .collection('matter')
           .document(this.userId)
           .snapshots(),
       builder: (context, snapshot) {
-        print("LLLLLLLLLLL: "+snapshot.data['matters'].length.toString());
-        if (snapshot.data['matters'].length == 0){ 
-          print("CCCCCCCCCCCC: Entre al hasData");
+        if (snapshot.data['matters'].length == 0) {
           return Column(
             children: [
               Container(
@@ -76,26 +77,20 @@ class HomePage extends StatelessWidget {
                 height: 100,
                 child: Center(
                     child: Text(
-                    "No hay materias para mostrar, Agrega una",
-                    style: TextStyle(
-                        fontSize: 14.0,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700),
-                  )),
-              
-                  
-                ),
+                  "No hay materias para mostrar, Agrega una",
+                  style: TextStyle(
+                      fontSize: 14.0,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700),
+                )),
+              ),
             ],
           );
         }
         return _buildList(context, snapshot.data['matters']);
-
       },
     );
   }
-
-
-  
 
   Widget _buildList(BuildContext context, List<dynamic> snapshot) {
     return Column(
@@ -120,12 +115,9 @@ class HomePage extends StatelessWidget {
                         fontWeight: FontWeight.w700),
                   )),
                   onTap: () => {
-                    
                     Navigator.of(context).push(MaterialPageRoute<void>(
                         builder: (BuildContext context) => PrincipalPage(
-                              pageId: matter['id'],
-                              userId: this.userId
-                            )))
+                            pageId: matter['id'], userId: this.userId)))
                   },
                 ),
               )
@@ -147,6 +139,11 @@ class HomePage extends StatelessWidget {
             .get()
             .then((value) => value['name']));
 
+    Future getTasks = Future.delayed(
+      Duration(seconds: 5),
+      () => Firestore.instance.collection('tasks').document(this.userId).get().then((value) => value['tasks'])
+    );
+
     Future<bool> _onBackPressed() {
       return showDialog(
             context: context,
@@ -160,7 +157,10 @@ class HomePage extends StatelessWidget {
                 ),
                 SizedBox(height: 16),
                 new GestureDetector(
-                  onTap: () => exit(0),
+                  onTap: () => {
+                    this.auth.signOut(),
+                    print(Navigator.of(context).toString())
+                  },
                   child: Text("Si"),
                 ),
               ],
@@ -295,11 +295,17 @@ class HomePage extends StatelessWidget {
                                     ],
                                   ),
                                   SizedBox(height: 15.0),
-                                  TaskColumn(
-                                    icon: Icons.alarm,
-                                    iconBackgroundColor: LightColors.kRed,
-                                    title: 'Por Hacer',
-                                    subtitle: '5 tasks now. 1 started',
+                                  FutureBuilder(
+                                    future: getTasks,
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot snapshot) {
+                                      return TaskColumn(
+                                        icon: Icons.alarm,
+                                        iconBackgroundColor: LightColors.kRed,
+                                        title: 'Por Hacer',
+                                        subtitle: '${snapshot.data.length} tareas por hacer',
+                                      );
+                                    },
                                   ),
                                   SizedBox(
                                     height: 15.0,

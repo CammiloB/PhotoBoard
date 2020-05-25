@@ -64,6 +64,10 @@ class MyApp extends StatelessWidget {
             theme: new ThemeData(
               primarySwatch: Colors.blueGrey,
             ),
+            routes: {
+              'home':(context) => HomePage(userId: this.userId, auth: this.auth,),
+              
+            },
             home: FlutterLogin(
                 onSignup: (loginData) {
                   print('Register Info');
@@ -82,7 +86,8 @@ class MyApp extends StatelessWidget {
                   print("data: " + loginData);
                   return _onRecoverPassword(loginData);
                 },
-                userId: snapshot.data),
+                userId: snapshot.data,
+                auth: this.auth),
             navigatorObservers: [TransitionRouteObserver()],
           );
         });

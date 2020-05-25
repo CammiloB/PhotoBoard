@@ -223,6 +223,7 @@ class FlutterLogin extends StatefulWidget {
     @required this.onLogin,
     @required this.onRecoverPassword,
     @required this.userId,
+    @required this.auth,
     this.title = 'LOGIN',
     this.logo,
     this.messages,
@@ -243,6 +244,8 @@ class FlutterLogin extends StatefulWidget {
 
   /// Called when the user hit the submit button when in recover password mode
   final RecoverCallback onRecoverPassword;
+
+  final BaseAuth auth;
 
   /// The large text above the login [Card], usually the app or company name
   final String title;
@@ -604,7 +607,8 @@ class _FlutterLoginState extends State<FlutterLogin>
                           Navigator.of(context).push(
                             MaterialPageRoute<void> (
                              builder: (BuildContext context) => HomePage(
-                               userId: widget.userId
+                               userId: widget.userId,
+                               auth: widget.auth
                              )
                               )
                           )

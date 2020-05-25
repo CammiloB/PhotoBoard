@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:photoboard/home/dates_list.dart';
 import 'package:photoboard/home/theme/colors/light_colors.dart';
-import 'package:photoboard/home/widgets/calendar_dates.dart';
 import 'package:photoboard/home/widgets/task_container.dart';
 import 'package:photoboard/home/screens/create_new_task_page.dart';
 import 'package:photoboard/home/widgets/back_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class CalendarPage extends StatelessWidget {
+class CalendarPage extends StatefulWidget{
   final String userId;
+  CalendarPage({Key key, @required this.userId}): super(key: key);
 
-  const CalendarPage({Key key, @required this.userId}) : super(key: key);
+  @override
+  _CalendarState createState() => _CalendarState();
+}
+
+class _CalendarState extends State<CalendarPage>{
 
   Widget _dashedText() {
     return Container(
@@ -28,7 +31,7 @@ class CalendarPage extends StatelessWidget {
     showDialog(
         context: context,
         builder: (context) {
-          return CustomDialog(userId: this.userId);
+          return CustomDialog(userId: widget.userId);
         });
   }
 
@@ -36,7 +39,7 @@ class CalendarPage extends StatelessWidget {
     return StreamBuilder<DocumentSnapshot>(
       stream: Firestore.instance
           .collection('tasks')
-          .document(this.userId)
+          .document(widget.userId)
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return LinearProgressIndicator();
@@ -45,19 +48,29 @@ class CalendarPage extends StatelessWidget {
     );
   }
 
-  Widget _buildList(BuildContext context, List<dynamic> snapshot) {
+  Widget _buildList(BuildContext context, List<dynamic> snapshot)  {
     return Column(
       children: snapshot
-          .map<Widget>(
-            (matter) => Column(children: [
-              TaskContainer(
-                title: matter['name'],
-                subtitle:
-                    matter['desc'],
-                boxColor: LightColors.kLightGreen,
-              ),
-            ]),
-          )
+          .map<Widget>((matter) =>  Column(children: [
+                   Dismissible(
+                    key: Key(matter['id']),
+                    onDismissed: (direction){
+                  setState((){
+                      Firestore.instance.collection('tasks').document(widget.userId).updateData({
+                    'tasks': FieldValue.arrayRemove([matter])});
+                  
+                  });
+                  Scaffold.of(context)
+                    .showSnackBar(SnackBar(content: Text("$matter dismissed")));
+                },
+                background: Container(color: Colors.red),
+                  child: TaskContainer(
+                    title: matter['name'],
+                    subtitle: matter['desc'],
+                    boxColor: LightColors.kLightGreen,
+                  ),
+          )]),
+              )
           .toList(),
     );
   }
@@ -140,9 +153,7 @@ class CalendarPage extends StatelessWidget {
                           child: ListView(
                             shrinkWrap: true,
                             physics: NeverScrollableScrollPhysics(),
-                            children: <Widget>[
-                              _buildMatters(context)
-                            ],
+                            children: <Widget>[_buildMatters(context)],
                           ),
                         )
                       ],
