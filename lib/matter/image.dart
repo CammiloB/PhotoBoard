@@ -5,8 +5,7 @@ import 'package:photoboard/matter/widget/utils/margin.dart';
 class ImagePage extends StatelessWidget {
   final String imageUrl;
 
-  ImagePage({Key key, @required this.imageUrl})
-      : super(key: key) {}
+  ImagePage({Key key, @required this.imageUrl}) : super(key: key) {}
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +24,7 @@ class ImagePage extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key key, this.title, this.imageUrl})
-      : super(key: key);
+  const MyHomePage({Key key, this.title, this.imageUrl}) : super(key: key);
   final String title;
   final String imageUrl;
 
@@ -51,40 +49,44 @@ class _MyHomePageState extends State<MyHomePage>
     _tabController = TabController(vsync: this, length: 2, initialIndex: 0);
   }
 
-   @override
+  @override
   Widget build(BuildContext context) {
-
     DecorationImage backgroundPhoto = new DecorationImage(
       image: new NetworkImage(this.imageUrl),
       fit: BoxFit.cover,
     );
 
     return GestureDetector(
-      child:Stack(
+        child: Stack(
       children: <Widget>[
         Container(
-          
           child: Column(
             children: <Widget>[
-              SizedBox(height: 50
-              ,),
+              SizedBox(
+                height: 50,
+              ),
               Container(
-
-                width: screenWidth(context),
-                height: screenHeight(context, percent: 0.9),
-                margin: EdgeInsets.symmetric(horizontal: 25),
-                padding: EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                  image: backgroundPhoto,
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black.withOpacity(0.18),
-                        blurRadius: 20,
-                        spreadRadius: 3.5,
-                        offset: Offset(0, 13)),
-                  ],
-                )
+                  width: screenWidth(context),
+                  height: screenHeight(context, percent: 0.9),
+                  margin: EdgeInsets.symmetric(horizontal: 25),
+                  padding: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    image: backgroundPhoto,
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black.withOpacity(0.18),
+                          blurRadius: 20,
+                          spreadRadius: 3.5,
+                          offset: Offset(0, 13)),
+                    ],
+                  )),
+              FloatingActionButton(
+                onPressed: () {
+                  print("Eliminae");
+                },
+                tooltip: 'Increment',
+                child: Icon(Icons.delete, color: Colors.red),
               )
             ],
           ),

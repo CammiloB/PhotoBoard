@@ -32,6 +32,10 @@ dependencies:
   font_awesome_flutter: ^8.8.1
   flushbar: ^1.10.0
   percent_indicator: ^2.1.3
+  shared_preferences: ^0.5.6
+  page_view_indicators: ^1.3.1
+  cached_network_image: ^2.2.0+1
+  progress_dialog: ^1.2.2
 
 
 dev_dependencies:
@@ -42,6 +46,9 @@ dev_dependencies:
 flutter:
 
   assets:
+    - assets/images/placeholder.jpg
+    - assets/images/facebook_logo.png
+    - assets/images/ic_launcher_round.png
     - assets/foto1.png
 
   uses-material-design: true

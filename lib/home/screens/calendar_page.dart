@@ -55,15 +55,25 @@ class _CalendarState extends State<CalendarPage>{
                    Dismissible(
                     key: Key(matter['id']),
                     onDismissed: (direction){
-                  setState((){
-                      Firestore.instance.collection('tasks').document(widget.userId).updateData({
-                    'tasks': FieldValue.arrayRemove([matter])});
-                  
-                  });
-                  Scaffold.of(context)
-                    .showSnackBar(SnackBar(content: Text("$matter dismissed")));
+                      if(direction.index == 2){
+                        setState((){
+                            Firestore.instance.collection('tasks').document(widget.userId).updateData({
+                          'tasks': FieldValue.arrayRemove([matter])});
+                        
+                        });
+                        Scaffold.of(context)
+                          .showSnackBar(SnackBar(content: Text("$matter se ha eliminado")));
+                      }else if(direction.index == 3){
+                          setState((){
+                              Firestore.instance.collection('tasks').document(widget.userId).updateData({
+                              'done': FieldValue.increment(1),
+                              'tasks': FieldValue.arrayRemove([matter])});
+                          
+                          });
+                          Scaffold.of(context)
+                            .showSnackBar(SnackBar(content: Text("$matter esta realizada")));
+                      }
                 },
-                background: Container(color: Colors.red),
                   child: TaskContainer(
                     title: matter['name'],
                     subtitle: matter['desc'],

@@ -11,15 +11,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:photoboard/login/auth.dart';
 import 'package:photoboard/matter/matter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:photoboard/login/model/User.dart';
+import 'package:photoboard/login/ui/auth/AuthScreen.dart';
+import 'package:photoboard/login/ui/services/Authenticate.dart';
+import 'package:photoboard/login/ui/utils/helper.dart';
 
 import 'Dart:io';
 
 class HomePage extends StatelessWidget {
   static const routeName = '/home';
-  final String userId;
+  final User user;
   final BaseAuth auth;
+  final String name;
 
-  HomePage({Key key, @required this.userId, this.auth}) : super(key: key) {}
+  HomePage({Key key, @required this.user, this.auth, this.name})
+      : super(key: key) {}
 
   Text subheading(String title) {
     return Text(
@@ -56,7 +62,7 @@ class HomePage extends StatelessWidget {
     showDialog(
         context: context,
         builder: (context) {
-          return CustomDialog(userId: this.userId);
+          return CustomDialog(userId: user.userID);
         });
   }
 
@@ -64,7 +70,7 @@ class HomePage extends StatelessWidget {
     return StreamBuilder<DocumentSnapshot>(
       stream: Firestore.instance
           .collection('matter')
-          .document(this.userId)
+          .document(user.userID)
           .snapshots(),
       builder: (context, snapshot) {
         if (snapshot.data['matters'].length == 0) {
@@ -101,7 +107,7 @@ class HomePage extends StatelessWidget {
                 padding: EdgeInsets.all(15.0),
                 height: 100,
                 decoration: BoxDecoration(
-                  color: LightColors.kDarkBlue,
+                  color: LightColors.kGreen,
                   borderRadius: BorderRadius.circular(40.0),
                 ),
                 child: ListTile(
@@ -116,7 +122,7 @@ class HomePage extends StatelessWidget {
                   onTap: () => {
                     Navigator.of(context).push(MaterialPageRoute<void>(
                         builder: (BuildContext context) => PrincipalPage(
-                            pageId: matter['id'], userId: this.userId)))
+                            pageId: matter['id'], userId: user.userID)))
                   },
                 ),
               )
@@ -134,7 +140,7 @@ class HomePage extends StatelessWidget {
         Duration(seconds: 5),
         () => Firestore.instance
             .collection('users')
-            .document(this.userId)
+            .document(user.userID)
             .get()
             .then((value) => value['name']));
 
@@ -142,228 +148,156 @@ class HomePage extends StatelessWidget {
         Duration(seconds: 5),
         () => Firestore.instance
             .collection('tasks')
-            .document(this.userId)
+            .document(user.userID)
             .get()
             .then((value) => value['tasks']));
 
-    Future<bool> _onBackPressed() {
-      return showDialog(
-            context: context,
-            builder: (context) => new AlertDialog(
-              title: new Text('¿Esta seguro?'),
-              content: new Text('¿Quiere salir de la aplicación?'),
-              actions: <Widget>[
-                new GestureDetector(
-                  onTap: () => Navigator.of(context).pop(false),
-                  child: Text("No"),
-                ),
-                SizedBox(height: 16),
-                new GestureDetector(
-                  onTap: () => {
-                    this.auth.signOut(),
-                    print(Navigator.of(context).toString())
-                  },
-                  child: Text("Si"),
-                ),
-              ],
+    return Scaffold(
+      backgroundColor: LightColors.kLightYellow,
+      body: SafeArea(
+        child: Column(
+          children: <Widget>[
+            TopContainer(
+              height: 200,
+              width: width,
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 0, vertical: 0.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          user.profilePictureURL != null
+                              ? displayCircleImage(
+                                  user.profilePictureURL, 117, false)
+                              : displayCircleImage(
+                                  'assets/foto1.png', 125, false),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Container(
+                                child: Text(name),
+                              ),
+                              Container(
+                                child: Text(
+                                  'Estudiante',
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                    fontSize: 16.0,
+                                    color: Colors.black45,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    )
+                  ]),
             ),
-          ) ??
-          false;
-    }
-
-    return WillPopScope(
-        onWillPop: _onBackPressed,
-        child: FutureBuilder<String>(
-          future: getName,
-          builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-            Widget children;
-            if (snapshot.hasData) {
-              children = Text(
-                snapshot.data,
-                textAlign: TextAlign.start,
-                style: TextStyle(
-                  fontSize: 22.0,
-                  color: LightColors.kDarkBlue,
-                  fontWeight: FontWeight.w800,
-                ),
-              );
-            } else if (snapshot.hasError) {
-              children = Icon(
-                Icons.error_outline,
-                color: Colors.red,
-                size: 60,
-              );
-            } else {
-              children = CircularProgressIndicator();
-            }
-
-            return Scaffold(
-              backgroundColor: LightColors.kLightYellow,
-              body: SafeArea(
+            Expanded(
+              child: SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
-                    TopContainer(
-                      height: 200,
-                      width: width,
+                    Container(
+                      color: Colors.transparent,
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 10.0),
                       child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Icon(Icons.power_settings_new,
-                                      color: LightColors.kDarkBlue, size: 30),
-                                ]),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 0, vertical: 0.0),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: <Widget>[
-                                  CircularPercentIndicator(
-                                    radius: 90.0,
-                                    lineWidth: 5.0,
-                                    animation: true,
-                                    percent: 0.75,
-                                    circularStrokeCap: CircularStrokeCap.round,
-                                    progressColor: LightColors.kRed,
-                                    backgroundColor: LightColors.kDarkYellow,
-                                    center: CircleAvatar(
-                                        backgroundColor: LightColors.kBlue,
-                                        radius: 35.0,
-                                        backgroundImage: new ExactAssetImage(
-                                            'assets/foto1.png')),
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: <Widget>[
-                                      Container(
-                                        child: children,
-                                      ),
-                                      Container(
-                                        child: Text(
-                                          'App Developer',
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                            fontSize: 16.0,
-                                            color: Colors.black45,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                ],
+                        children: <Widget>[
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              subheading('Mis tareas'),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => CalendarPage(
+                                              userId: user.userID,
+                                            )),
+                                  );
+                                },
+                                child: calendarIcon(),
                               ),
-                            )
-                          ]),
+                            ],
+                          ),
+                          SizedBox(height: 15.0),
+                          FutureBuilder(
+                            future: getTasks,
+                            builder:
+                                (BuildContext context, AsyncSnapshot snapshot) {
+                              int tasksForDo = 0;
+                              if (snapshot.hasData) {
+                                if (snapshot.data != null) {
+                                  tasksForDo = snapshot.data.length;
+                                }
+                              }
+                              return TaskColumn(
+                                icon: Icons.alarm,
+                                iconBackgroundColor: LightColors.kRed,
+                                title: 'Por Hacer',
+                                subtitle: '${tasksForDo} tareas por hacer',
+                              );
+                            },
+                          ),
+                          SizedBox(
+                            height: 15.0,
+                          ),
+                          TaskColumn(
+                            icon: Icons.blur_circular,
+                            iconBackgroundColor: LightColors.kDarkYellow,
+                            title: 'En Progreso',
+                            subtitle: '1 tasks now. 1 started',
+                          ),
+                          SizedBox(height: 15.0),
+                          TaskColumn(
+                            icon: Icons.check_circle_outline,
+                            iconBackgroundColor: LightColors.kBlue,
+                            title: 'Hecho',
+                            subtitle: '18 tasks now. 13 started',
+                          ),
+                        ],
+                      ),
                     ),
-                    Expanded(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: <Widget>[
-                            Container(
-                              color: Colors.transparent,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 20.0, vertical: 10.0),
-                              child: Column(
-                                children: <Widget>[
-                                  Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      subheading('Mis tareas'),
-                                      GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    CalendarPage(
-                                                      userId: userId,
-                                                    )),
-                                          );
-                                        },
-                                        child: addIcon(),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 15.0),
-                                  FutureBuilder(
-                                    future: getTasks,
-                                    builder: (BuildContext context,
-                                        AsyncSnapshot snapshot) {
-                                      return TaskColumn(
-                                        icon: Icons.alarm,
-                                        iconBackgroundColor: LightColors.kRed,
-                                        title: 'Por Hacer',
-                                        subtitle:
-                                            '${snapshot.data.length} tareas por hacer',
-                                      );
-                                    },
-                                  ),
-                                  SizedBox(
-                                    height: 15.0,
-                                  ),
-                                  TaskColumn(
-                                    icon: Icons.blur_circular,
-                                    iconBackgroundColor:
-                                        LightColors.kDarkYellow,
-                                    title: 'En Progreso',
-                                    subtitle: '1 tasks now. 1 started',
-                                  ),
-                                  SizedBox(height: 15.0),
-                                  TaskColumn(
-                                    icon: Icons.check_circle_outline,
-                                    iconBackgroundColor: LightColors.kBlue,
-                                    title: 'Hecho',
-                                    subtitle: '18 tasks now. 13 started',
-                                  ),
-                                ],
+                    Container(
+                      color: Colors.transparent,
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 10.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              subheading('Mis Materias'),
+                              GestureDetector(
+                                onTap: () {
+                                  _dialogAddRecDesp(context);
+                                },
+                                child: addIcon(),
                               ),
-                            ),
-                            Container(
-                              color: Colors.transparent,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 20.0, vertical: 10.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      subheading('Mis Materias'),
-                                      GestureDetector(
-                                        onTap: () {
-                                          _dialogAddRecDesp(context);
-                                        },
-                                        child: addIcon(),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 5.0),
-                                  _buildMatters(context)
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
+                            ],
+                          ),
+                          SizedBox(height: 5.0),
+                          _buildMatters(context)
+                        ],
                       ),
                     ),
                   ],
                 ),
               ),
-            );
-          },
-        ));
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

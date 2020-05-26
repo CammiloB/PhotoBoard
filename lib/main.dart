@@ -1,97 +1,115 @@
-import 'package:flutter/scheduler.dart' show timeDilation;
-import 'package:flutter/material.dart';
-import 'package:photoboard/login/flutter_login.dart';
+import 'dart:async';
 
-import 'transition_route_observer.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:photoboard/home/screens/home_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:photoboard/login/model/User.dart';
+import 'package:photoboard/login/ui/home/HomeScreen.dart';
+import 'package:photoboard/login/ui/services/Authenticate.dart';
+import 'package:photoboard/login/ui/utils/helper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:photoboard/login/auth.dart';
+import 'login/constants.dart' as Constants;
+import 'login/ui/auth/AuthScreen.dart';
+import 'login/ui/onBoarding/OnBoardingScreen.dart';
 
 void main() => runApp(new MyApp());
 
-class MyApp extends StatelessWidget {
-  Duration get loginTime => Duration(seconds: timeDilation.ceil() * 1);
-  String userId;
-  final auth = new AuthUser();
+class MyApp extends StatefulWidget {
+  @override
+  MyAppState createState() => MyAppState();
+}
 
-  Future<String> _loginUser(LoginData data, BuildContext context) async {
-    return Future.delayed(loginTime).then((_) async {
-      try {
-        await auth.signIn(data.name, data.password);
-        return null;
-      } catch (e) {
-        return "Error " + e.toString();
-      }
-    });
+class MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  static User currentUser;
+
+  @override
+  Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        statusBarColor: Color(Constants.COLOR_PRIMARY_DARK)));
+    return MaterialApp(
+        theme: ThemeData(accentColor: Color(Constants.COLOR_PRIMARY)),
+        debugShowCheckedModeBanner: false,
+        color: Color(Constants.COLOR_PRIMARY),
+        home: OnBoarding());
   }
 
-  Future<String> _registerUser(LoginData data) async {
-    return Future.delayed(loginTime).then((_) async {
-      try {
-        userId = await auth.createUser(data.name, data.password);
-        Firestore.instance
-            .collection('users')
-            .document(userId) 
-            .setData({'name': data.username});
-        Firestore.instance.collection('matter').document(userId).setData({"matters":FieldValue.arrayUnion([])});
-        Firestore.instance.collection('tasks').document(userId).setData({"tasks":FieldValue.arrayUnion([])});
-        return null;
-      } catch (e) {
-        return "Error";
-      }
-    });
+  @override
+  void initState() {
+    WidgetsBinding.instance.addObserver(this);
+    super.initState();
   }
 
-  Future<String> _onRecoverPassword(String email) async {
-    return Future.delayed(loginTime).then((_) async {
-      try {
-        await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
-      } catch (e) {
-        return "Error";
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (FirebaseAuth.instance.currentUser() != null && currentUser != null) {
+      if (state == AppLifecycleState.paused) {
+        //user offline
+        currentUser.active = false;
+        currentUser.lastOnlineTimestamp = Timestamp.now();
+        FireStoreUtils.currentUserDocRef.updateData(currentUser.toJson());
+      } else if (state == AppLifecycleState.resumed) {
+        //user online
+        currentUser.active = true;
+        FireStoreUtils.currentUserDocRef.updateData(currentUser.toJson());
       }
-    });
+    }
+  }
+}
+
+class OnBoarding extends StatefulWidget {
+  @override
+  State createState() {
+    return OnBoardingState();
+  }
+}
+
+class OnBoardingState extends State<OnBoarding> {
+  Future hasFinishedOnBoarding() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool finishedOnBoarding =
+    (prefs.getBool(Constants.FINISHED_ON_BOARDING) ?? false);
+
+    if (finishedOnBoarding) {
+      FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
+      if (firebaseUser != null) {
+        User user = await FireStoreUtils().getCurrentUser(firebaseUser.uid);
+        if (user != null) {
+          MyAppState.currentUser = user;
+          pushReplacement(context, new HomeScreen(user: user));
+        } else {
+          pushReplacement(context, new AuthScreen());
+        }
+      } else {
+        pushReplacement(context, new AuthScreen());
+      }
+    } else {
+      pushReplacement(context, new OnBoardingScreen());
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    hasFinishedOnBoarding();
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<String>(
-        future: auth.currentUser(),
-        builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-          return new MaterialApp(
-            title: 'Login',
-            theme: new ThemeData(
-              primarySwatch: Colors.blueGrey,
-            ),
-            routes: {
-              'home':(context) => HomePage(userId: this.userId, auth: this.auth,),
-              
-            },
-            home: FlutterLogin(
-                onSignup: (loginData) {
-                  print('Register Info');
-                  print('Name: ${loginData.name}');
-                  print('Password: ${loginData.password}');
-                  print('Nombre: ${loginData.password}');
-                
-                  return _registerUser(loginData);
-                },
-                onLogin: (loginData) {
-                  print('Login info');
-                  print('Name: ${loginData.name}');
-                  print('Password: ${loginData.password}');
-                  return _loginUser(loginData, context);
-                },
-                onRecoverPassword: (loginData) {
-                  print("Recover Password");
-                  print("data: " + loginData);
-                  return _onRecoverPassword(loginData);
-                },
-                userId: snapshot.data,
-                auth: this.auth),
-            navigatorObservers: [TransitionRouteObserver()],
-          );
-        });
+    return Scaffold(
+      backgroundColor: Color(Constants.COLOR_PRIMARY),
+      body: Center(
+        child: CircularProgressIndicator(
+          backgroundColor: Colors.white,
+        ),
+      ),
+    );
   }
 }
