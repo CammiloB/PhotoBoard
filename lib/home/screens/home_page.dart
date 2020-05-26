@@ -19,8 +19,7 @@ class HomePage extends StatelessWidget {
   final String userId;
   final BaseAuth auth;
 
-  HomePage({Key key, @required this.userId, this.auth})
-      : super(key: key) {}
+  HomePage({Key key, @required this.userId, this.auth}) : super(key: key) {}
 
   Text subheading(String title) {
     return Text(
@@ -102,7 +101,7 @@ class HomePage extends StatelessWidget {
                 padding: EdgeInsets.all(15.0),
                 height: 100,
                 decoration: BoxDecoration(
-                  color: LightColors.kGreen,
+                  color: LightColors.kDarkBlue,
                   borderRadius: BorderRadius.circular(40.0),
                 ),
                 child: ListTile(
@@ -140,9 +139,12 @@ class HomePage extends StatelessWidget {
             .then((value) => value['name']));
 
     Future getTasks = Future.delayed(
-      Duration(seconds: 5),
-      () => Firestore.instance.collection('tasks').document(this.userId).get().then((value) => value['tasks'])
-    );
+        Duration(seconds: 5),
+        () => Firestore.instance
+            .collection('tasks')
+            .document(this.userId)
+            .get()
+            .then((value) => value['tasks']));
 
     Future<bool> _onBackPressed() {
       return showDialog(
@@ -207,14 +209,12 @@ class HomePage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Icon(Icons.menu,
-                                    color: LightColors.kDarkBlue, size: 30.0),
-                                Icon(Icons.search,
-                                    color: LightColors.kDarkBlue, size: 25.0),
-                              ],
-                            ),
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Icon(Icons.power_settings_new,
+                                      color: LightColors.kDarkBlue, size: 30),
+                                ]),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 0, vertical: 0.0),
@@ -290,7 +290,7 @@ class HomePage extends StatelessWidget {
                                                     )),
                                           );
                                         },
-                                        child: calendarIcon(),
+                                        child: addIcon(),
                                       ),
                                     ],
                                   ),
@@ -303,7 +303,8 @@ class HomePage extends StatelessWidget {
                                         icon: Icons.alarm,
                                         iconBackgroundColor: LightColors.kRed,
                                         title: 'Por Hacer',
-                                        subtitle: '${snapshot.data.length} tareas por hacer',
+                                        subtitle:
+                                            '${snapshot.data.length} tareas por hacer',
                                       );
                                     },
                                   ),

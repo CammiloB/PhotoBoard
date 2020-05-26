@@ -73,6 +73,8 @@ class MyApp extends StatelessWidget {
                   print('Register Info');
                   print('Name: ${loginData.name}');
                   print('Password: ${loginData.password}');
+                  print('Nombre: ${loginData.password}');
+                
                   return _registerUser(loginData);
                 },
                 onLogin: (loginData) {

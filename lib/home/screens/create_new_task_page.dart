@@ -43,7 +43,7 @@ class _CustomDialogState extends State<CustomDialog> {
         textAlign: TextAlign.center,
         style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
       ),
-      backgroundColor: Colors.green[400],
+      backgroundColor: Colors.blueGrey,
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
