@@ -11,6 +11,7 @@ import 'package:photoboard/login/ui/services/Authenticate.dart';
 import 'package:photoboard/login/ui/utils/helper.dart';
 import 'package:photoboard/home/screens/home_page.dart';
 import 'package:photoboard/home/theme/colors/light_colors.dart';
+import 'package:photoboard/chat/chat.dart';
 import '../../../main.dart';
 
 FireStoreUtils _fireStoreUtils = FireStoreUtils();
@@ -55,13 +56,9 @@ class _HomeState extends State<HomeScreen> {
               leading: Transform.rotate(
                 angle: 0,
                   child: Icon(Icons.chat, color: Colors.black)),
-              onTap: () async {
-                user.active = false;
-                user.lastOnlineTimestamp = Timestamp.now();
-                _fireStoreUtils.updateCurrentUser(user, context);
-                await FirebaseAuth.instance.signOut();
-                MyAppState.currentUser = null;
-                pushAndRemoveUntil(context, AuthScreen(), false);
+              onTap: () {
+                 Navigator.of(context).push(MaterialPageRoute<void>(
+                        builder: (BuildContext context) => ChatPage(user: user )));
               },
             ),
             ListTile(

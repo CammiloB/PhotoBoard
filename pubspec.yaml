@@ -36,6 +36,8 @@ dependencies:
   page_view_indicators: ^1.3.1
   cached_network_image: ^2.2.0+1
   progress_dialog: ^1.2.2
+  flutter_dialogflow: ^0.1.3
+  bubble: ^1.1.9+1
 
 
 dev_dependencies:
@@ -46,6 +48,9 @@ dev_dependencies:
 flutter:
 
   assets:
+    - assets/credentials.json
+    - assets/bot.png
+    - assets/user.png
     - assets/images/placeholder.jpg
     - assets/images/facebook_logo.png
     - assets/images/ic_launcher_round.png
