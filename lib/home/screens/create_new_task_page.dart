@@ -39,7 +39,7 @@ class _CustomDialogState extends State<CustomDialog> {
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(width * 0.050)),
       title: Text(
-        'Agregar Materia',
+        'Agregar Tarea',
         textAlign: TextAlign.center,
         style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
       ),
@@ -48,9 +48,6 @@ class _CustomDialogState extends State<CustomDialog> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Text("Nombre:   ",
-                textAlign: TextAlign.start,
-                style: TextStyle(color: Colors.white, fontSize: width * 0.06)),
             Flexible(
               child: TextField(
                 controller: _controllerName,
@@ -58,7 +55,7 @@ class _CustomDialogState extends State<CustomDialog> {
                 maxLines: 1,
                 textAlign: TextAlign.start,
                 decoration: new InputDecoration(
-                    hintText: "Nombre Materia",
+                    hintText: "Nombre Tarea",
                     contentPadding: EdgeInsets.only(
                         left: width * 0.04,
                         top: width * 0.041,

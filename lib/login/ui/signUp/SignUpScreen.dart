@@ -371,7 +371,7 @@ class _SignUpState extends State<SignUpScreen> {
           "matters": FieldValue.arrayUnion([])
         });
         await Firestore.instance.collection('tasks').document(user.userID).setData({
-          "done":0, "tasks": FieldValue.arrayUnion([])
+          "numTasks":0, "done":0, "tasks": FieldValue.arrayUnion([])
         });
         hideProgress();
         MyAppState.currentUser = user;

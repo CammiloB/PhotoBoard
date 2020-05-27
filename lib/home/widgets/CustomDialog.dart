@@ -56,9 +56,6 @@ class _CustomDialogState extends State<CustomDialog> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Text("Nombre:   ",
-                textAlign: TextAlign.start,
-                style: TextStyle(color: Colors.white, fontSize: width * 0.06)),
             Flexible(
               child: TextField(
                 controller: _controllerName,

@@ -4,19 +4,12 @@ import 'package:photoboard/home/theme/colors/light_colors.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:photoboard/home/widgets/task_column.dart';
 import 'package:photoboard/home/widgets/top_container.dart';
-
 import 'package:photoboard/home/widgets/CustomDialog.dart';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:photoboard/login/auth.dart';
 import 'package:photoboard/matter/matter.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:photoboard/login/model/User.dart';
-import 'package:photoboard/login/ui/auth/AuthScreen.dart';
-import 'package:photoboard/login/ui/services/Authenticate.dart';
 import 'package:photoboard/login/ui/utils/helper.dart';
-
-import 'Dart:io';
 
 class HomePage extends StatelessWidget {
   static const routeName = '/home';
@@ -150,7 +143,15 @@ class HomePage extends StatelessWidget {
             .collection('tasks')
             .document(user.userID)
             .get()
-            .then((value) => value['tasks']));
+            .then((value) => value['numTasks']));
+
+    Future getDoneTasks = Future.delayed(
+        Duration(seconds: 5),
+        () => Firestore.instance
+            .collection('tasks')
+            .document(user.userID)
+            .get()
+            .then((value) => value['done']));
 
     return Scaffold(
       backgroundColor: LightColors.kLightYellow,
@@ -179,7 +180,7 @@ class HomePage extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
                               Container(
-                                child: Text(name),
+                                child: Text(name, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                               ),
                               Container(
                                 child: Text(
@@ -236,7 +237,7 @@ class HomePage extends StatelessWidget {
                               int tasksForDo = 0;
                               if (snapshot.hasData) {
                                 if (snapshot.data != null) {
-                                  tasksForDo = snapshot.data.length;
+                                  tasksForDo = snapshot.data;
                                 }
                               }
                               return TaskColumn(
@@ -247,22 +248,26 @@ class HomePage extends StatelessWidget {
                               );
                             },
                           ),
-                          SizedBox(
-                            height: 15.0,
-                          ),
-                          TaskColumn(
-                            icon: Icons.blur_circular,
-                            iconBackgroundColor: LightColors.kDarkYellow,
-                            title: 'En Progreso',
-                            subtitle: '1 tasks now. 1 started',
-                          ),
                           SizedBox(height: 15.0),
-                          TaskColumn(
-                            icon: Icons.check_circle_outline,
-                            iconBackgroundColor: LightColors.kBlue,
-                            title: 'Hecho',
-                            subtitle: '18 tasks now. 13 started',
+                          FutureBuilder(
+                            future: getDoneTasks,
+                            builder:
+                                (BuildContext context, AsyncSnapshot snapshot) {
+                              int tasksDone = 0;
+                              if (snapshot.hasData) {
+                                if (snapshot.data != null) {
+                                  tasksDone = snapshot.data;
+                                }
+                              }
+                              return TaskColumn(
+                                icon: Icons.check_circle_outline,
+                                iconBackgroundColor: LightColors.kBlue,
+                                title: 'Hecho',
+                                subtitle: '${tasksDone} Tareas hechas',
+                              );
+                            },
                           ),
+                          
                         ],
                       ),
                     ),

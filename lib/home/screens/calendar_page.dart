@@ -58,7 +58,7 @@ class _CalendarState extends State<CalendarPage>{
                       if(direction.index == 2){
                         setState((){
                             Firestore.instance.collection('tasks').document(widget.userId).updateData({
-                          'tasks': FieldValue.arrayRemove([matter])});
+                          'numTasks':FieldValue.increment(-1) ,'tasks': FieldValue.arrayRemove([matter])});
                         
                         });
                         Scaffold.of(context)
@@ -66,6 +66,7 @@ class _CalendarState extends State<CalendarPage>{
                       }else if(direction.index == 3){
                           setState((){
                               Firestore.instance.collection('tasks').document(widget.userId).updateData({
+                              'numTasks': FieldValue.increment(-1),
                               'done': FieldValue.increment(1),
                               'tasks': FieldValue.arrayRemove([matter])});
                           
