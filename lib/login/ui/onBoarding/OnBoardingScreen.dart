@@ -9,19 +9,19 @@ import '../auth/AuthScreen.dart';
 final _currentPageNotifier = ValueNotifier<int>(0);
 
 final List<String> _titlesList = [
-  'Flutter Onboarding',
-  'Firebase Auth',
-  'Facebook Login'
+  'Photoboard',
+  'Autenticacion con Firebase',
+  'Usuarios.'
 ];
 
 final List<String> _subtitlesList = [
-  'Build your onboarding flow in seconds.',
-  'Use Firebase for user managements.',
-  'Leaverage Facebook to log in user easily.'
+  'Photoboard es una aplicación que te permitira organizar tus tareas y fotos de clase, de una manera sencilla y rapida para que siempre lleves toda la información contigo.',
+  'Esta app trae la infromacion de firebase logrando traer las imagenes de una Base de Datos.',
+  'Los Usuarios ya no se preocupara de la toma de apuntes.'
 ];
 
 final List<IconData> _imageList = [
-  Icons.developer_mode,
+  Icons.camera,
   Icons.layers,
   Icons.account_circle
 ];
@@ -100,13 +100,13 @@ Widget getLastPage(BuildContext context) {
               Padding(
                 padding: const EdgeInsets.all(40.0),
                 child: new Icon(
-                  Icons.code,
+                  Icons.check_circle,
                   color: Colors.white,
                   size: 120,
                 ),
               ),
               Text(
-                'Jump straight into the action.',
+                'bienvenidos a Photoboard.',
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 20.0,

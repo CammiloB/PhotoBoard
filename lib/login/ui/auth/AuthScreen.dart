@@ -16,15 +16,23 @@ class AuthScreen extends StatelessWidget {
             Center(
               child: Padding(
                 padding: const EdgeInsets.only(top: 70.0, bottom: 20.0),
-                child: Icon(
-                  Icons.phone_iphone,
-                  size: 150,
-                  color: Color(Constants.COLOR_PRIMARY),
+                child: Material(
+                  elevation: 8.0,
+                  shape: CircleBorder(),
+                  child: CircleAvatar(
+                    backgroundColor: Colors.blueGrey[700],
+                    child: new Image.asset(
+                      'assets/foto1.png',
+                      width: 120.0,
+                      height: 145.0,
+                    ),
+                    radius: 65.0,
+                  ),
                 ),
               ),
             ),
             Text(
-              'Say Hello To Your New App!',
+              'PHOTOBOARD',
               textAlign: TextAlign.center,
               style: TextStyle(
                   color: Color(Constants.COLOR_PRIMARY),
@@ -34,7 +42,7 @@ class AuthScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
-                'You\'ve just saved a week of development and headaches.',
+                'Todas tus clases a la mano.',
                 style: TextStyle(fontSize: 18),
                 textAlign: TextAlign.center,
               ),
